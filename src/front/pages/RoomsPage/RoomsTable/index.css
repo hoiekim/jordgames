@@ -1,0 +1,14 @@
+div.RoomsTable > div > button.addButton {
+  margin-left: 10px;
+}
+
+div.RoomRow {
+  padding: 0 10px;
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+div.RoomRow > div.buttons > button {
+  margin: 0 5px;
+}

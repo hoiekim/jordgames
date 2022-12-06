@@ -1,0 +1,15 @@
+div.LoginPage > h2 {
+  text-align: center;
+}
+
+div.LoginPage > div.inputArea {
+  padding: 0 10px;
+  text-align: center;
+}
+
+div.LoginPage > div.inputArea > div > input,
+div.LoginPage > div.inputArea > div > button {
+  text-align: center;
+  width: 200px;
+  margin: 5px 0;
+}

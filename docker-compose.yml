@@ -1,0 +1,10 @@
+---
+version: "3.3"
+
+services:
+  jordgames:
+    build: .
+    env_file:
+      - ./.env.local
+    ports:
+      - "3003:3003"

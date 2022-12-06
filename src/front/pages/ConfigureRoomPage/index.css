@@ -1,0 +1,83 @@
+div.ConfigureRoomPage > h2 {
+  margin: 0;
+  padding: 16px 10px 10px;
+  position: sticky;
+  top: 50px;
+  background-color: #fffe;
+  z-index: 110;
+}
+
+div.ConfigureRoomPage > div.roomName {
+  margin: 0;
+  position: sticky;
+  top: 106px;
+  background-color: #fffe;
+  z-index: 110;
+}
+
+div.ConfigureRoomPage > div.selectedGames {
+  margin: 0;
+  position: sticky;
+  top: 130px;
+  background-color: #fffe;
+  z-index: 110;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+div.ConfigureRoomPage > div.selectedGames {
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+
+div.ConfigureRoomPage > div {
+  padding: 0 10px;
+}
+
+div.ConfigureRoomPage > div.selectedGames > div {
+  display: inline-block;
+  cursor: pointer;
+  margin: 0 3px;
+  height: 50px;
+}
+
+div.ConfigureRoomPage > div.selectedGames > div > img {
+  width: 100%;
+  height: 100%;
+}
+
+div.ConfigureRoomPage > div > div.gameOption {
+  display: flex;
+  margin: 10px 0;
+}
+
+div.ConfigureRoomPage > div > div.gameOption > div {
+  flex: 1;
+  margin: 0 5px;
+}
+
+div.ConfigureRoomPage > div > div.gameOption > div:first-child {
+  margin-left: 0;
+}
+
+div.ConfigureRoomPage > div > div.gameOption > div:last-child {
+  margin-right: 0;
+}
+
+div.ConfigureRoomPage > div > div.gameOption > div > img {
+  width: 100%;
+}
+
+div.ConfigureRoomPage > div.completeButton {
+  position: fixed;
+  bottom: 120px;
+  width: 100%;
+  text-align: center;
+}
+
+div.ConfigureRoomPage > div.completeButton > button {
+  margin: 0 auto;
+  height: 40px;
+  width: 200px;
+  box-shadow: 0px 10px 20px #888, inset 0px 2px 2px #fff, inset 0px -2px 2px #888;
+}

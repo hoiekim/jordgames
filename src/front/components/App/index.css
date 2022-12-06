@@ -1,0 +1,151 @@
+* {
+  box-sizing: border-box;
+  cursor: default;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fff;
+  color: #333;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+h2 {
+  padding: 0 10px;
+}
+
+button {
+  background-color: #eee;
+  color: #333;
+  border: none;
+  border-radius: 3px;
+  min-width: 20px;
+  height: 24px;
+  padding: 0 5px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:visited {
+  color: inherit;
+}
+
+button,
+select,
+a {
+  cursor: pointer;
+}
+
+button:hover,
+select:hover,
+a:hover {
+  background-color: #ddd;
+}
+
+input {
+  cursor: text;
+  background-color: #eee;
+  color: #333;
+  border: none;
+  height: 24px;
+  font-size: 16px;
+  padding: 0;
+  outline: 0;
+}
+
+input.readonly {
+  background-color: inherit;
+  cursor: default;
+}
+
+select {
+  background-color: #eee;
+  color: #333;
+  border: none;
+  height: 24px;
+  font-size: 16px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+div#root {
+  max-width: 950px;
+  min-height: 100vh;
+  margin: auto;
+  background-color: #fff;
+}
+
+div.Login {
+  padding-top: 100px;
+}
+
+div.Login > div {
+  text-align: center;
+  margin: 10px 0;
+}
+
+div.Router {
+  position: relative;
+}
+
+div.Router > div {
+  width: min(100vw, 950px);
+  min-height: 100vh;
+  background-color: #fff;
+  padding: calc(50px + env(safe-area-inset-top)) env(safe-area-inset-right)
+    calc(90px + env(safe-area-inset-bottom)) env(safe-area-inset-left);
+}
+
+div.Router > div.previousPage {
+  z-index: 500;
+}
+
+div.Router > div.currentPage {
+  position: relative;
+  z-index: 510;
+}
+
+div.Router > div.nextPage {
+  z-index: 520;
+}
+
+div.Router > div.nextPage,
+div.Router > div.previousPage {
+  position: fixed;
+  top: 0;
+}
+
+div.Router > div.nextPage,
+div.Router > div.currentPage {
+  transition-property: left;
+  transition-duration: 300ms;
+}
+
+div.Router.transitioning.forward > div.nextPage {
+  left: 0;
+}
+
+div.Router:not(.transitioning.forward) > div.nextPage {
+  transition-duration: 0ms;
+  left: 100vw;
+}
+
+div.Router.transitioning.backward > div.currentPage {
+  left: 100vw;
+}
+
+div.Router:not(.transitioning.backward) > div.currentPage {
+  transition-duration: 0ms;
+  left: 0;
+}

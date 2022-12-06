@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "outDir": "./build/back",
+    "baseUrl": "./src",
+    "paths": {
+      "front": ["./front"],
+      "front/*": ["./front/*"],
+      "back": ["./back"],
+      "back/*": ["./back/*"]
+    }
+  },
+  "include": ["src/back"],
+  "exclude": ["*.test.ts", "**/*.test.ts"]
+}

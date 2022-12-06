@@ -1,0 +1,57 @@
+div.RoomDetailPage > h2 {
+  margin: 0;
+  padding: 16px 10px 10px;
+  position: sticky;
+  top: 50px;
+  background-color: #fffe;
+  z-index: 110;
+}
+
+div.RoomDetailPage > h2 > button {
+  position: relative;
+  top: -5px;
+  margin-left: 5px;
+}
+
+div.GameRow {
+  margin: 20px 0;
+  padding: 0 10px;
+}
+
+div.GameRow > div {
+  margin: 5px 0;
+}
+
+div.GameRow > div.gameInfo {
+  display: flex;
+  align-items: flex-start;
+}
+
+div.GameRow > div.gameInfo > div {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+div.GameRow > div.gameInfo > div:first-child {
+  margin-left: 0;
+}
+
+div.GameRow > div.gameInfo > div:last-child {
+  margin-right: 0;
+}
+
+div.GameRow > div.gameInfo > div > img {
+  width: 80px;
+}
+
+div.GameRow > div > button {
+  width: 100%;
+}
+
+div.GameRow > div.voters > div {
+  display: inline-block;
+  margin: 5px;
+  border: 1px #ccc solid;
+  border-radius: 5px;
+  padding: 3px 5px;
+}

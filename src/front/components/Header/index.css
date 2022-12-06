@@ -1,0 +1,97 @@
+div.Header * {
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+div.Header button {
+  text-align: center;
+}
+
+div.Header button:not(:hover) {
+  background-color: inherit;
+}
+
+div.Header > .viewController {
+  z-index: 800;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #eee;
+  margin: auto;
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+div.Header > .viewController > .centerBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+div.Header > .viewController > .centerBox {
+  margin: 0 auto;
+  max-width: 950px;
+  width: 100%;
+}
+
+div.Header > .viewController > div > div > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.Header > .viewController > div > .backButton {
+  width: 25px;
+}
+
+div.Header > .viewController > div > .backButton > button {
+  font-size: 20px;
+}
+
+div.Header > .viewController > div > .hamburger {
+  position: relative;
+  top: -4px;
+}
+
+div.Header > .viewController > div > .hamburger > button {
+  font-size: 40px;
+  height: auto;
+}
+
+div.Header > .viewController > div > .hamburger > .fadeCover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 810;
+  background-color: #000;
+  opacity: 0.5;
+}
+
+div.Header > .viewController > div > .hamburger > .menu {
+  position: absolute;
+  right: 0;
+  top: 10px;
+  width: 200px;
+  padding: 20px 10px;
+  background-color: #eee;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  z-index: 820;
+}
+
+div.Header > .viewController > div > .hamburger > .menu > button {
+  width: 100%;
+  height: 30px;
+  border-top: 1px solid #ddd;
+}
+
+div.Header > .viewController > div > .hamburger > .menu > button:last-child {
+  border-bottom: 1px solid #ddd;
+}
