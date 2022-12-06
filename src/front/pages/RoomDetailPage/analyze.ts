@@ -13,16 +13,15 @@ export const getCombos = async (room: Room, retry = 0): Promise<Game[][] | null>
           const key = "bggGameDetail_" + game.id;
           const item = window.localStorage.getItem(key);
           if (!item) throw new Error();
-          const detail = JSON.parse(item);
-          const detailedGame: Game & { detail: BggGameDetail } = { ...game, detail };
-          return [game.id, detailedGame];
+          const detail = JSON.parse(item) as BggGameDetail;
+          return [game.id, detail];
         })
       );
 
       const users = games.flatMap(({ votes }) => votes);
 
       const gamesVotedMoreThanMinPlayers = games.filter(({ id, votes }) => {
-        return votes.length > +(gameDetails.get(id)?.detail?.minplayers || 0);
+        return votes.length >= +(gameDetails.get(id)?.minplayers?.value || 0);
       });
 
       const gamesSortedByVotes = gamesVotedMoreThanMinPlayers.sort((a, b) => {
@@ -44,8 +43,6 @@ export const getCombos = async (room: Room, retry = 0): Promise<Game[][] | null>
           combos.push([first, second]);
         }
       }
-
-      console.log(combos);
 
       res(combos);
     } catch (err) {

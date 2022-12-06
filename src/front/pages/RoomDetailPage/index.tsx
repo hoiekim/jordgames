@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { RoomStreamGetResponse } from "back/routes";
 import { Game, Room, Subscriber } from "back/lib";
-import { call, read, PATH, useAppContext, getCombos } from "front";
+import { call, read, PATH, useAppContext } from "front";
 import GameRow from "./GameRow";
+import { getCombos } from "./analyze";
+import GameThumbnail from "./GameThumbnail";
 
 const RoomDetailPage = () => {
   const { rooms, setRooms, router } = useAppContext();
@@ -26,7 +28,7 @@ const RoomDetailPage = () => {
 
   useEffect(() => {
     if (room) getCombos(room).then(setGameCombos);
-  }, [room]);
+  }, [room, rooms]);
 
   useEffect(() => {
     if (path === PATH.ROOM && !init.current && id) {
@@ -77,7 +79,7 @@ const RoomDetailPage = () => {
 
   const gameComboRows = gameCombos?.map((combo) => {
     const gameRows = combo.map((game) => (
-      <GameRow key={`gameRow_${game.id}`} room_id={id} game={game} />
+      <GameThumbnail key={`gameRow_${game.id}`} game={game} />
     ));
     return (
       <div key={`gameComboRow_${combo[0].id}_${combo[1].id}`} className="gameComboRow">

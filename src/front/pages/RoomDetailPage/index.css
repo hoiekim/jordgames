@@ -48,10 +48,37 @@ div.GameRow > div > button {
   width: 100%;
 }
 
-div.GameRow > div.voters > div {
+div.GameRow > div.voters > div,
+div.GameThumbnail > div.voters > div {
   display: inline-block;
   margin: 5px;
   border: 1px #ccc solid;
   border-radius: 5px;
   padding: 3px 5px;
+}
+
+div.RoomDetailPage > div.gameComboRows > div.gameComboRow {
+  border-bottom: 1px #aaa solid;
+  display: flex;
+  padding: 10px;
+}
+
+div.GameThumbnail > div > div {
+  margin: 5px 0;
+}
+
+div.GameThumbnail > div > div.title {
+  min-height: 30px;
+}
+
+div.GameThumbnail > div > div.imageDiv {
+  min-height: 100px;
+}
+
+div.GameThumbnail img {
+  width: 100px;
+}
+
+div.GameThumbnail {
+  flex: 1;
 }
