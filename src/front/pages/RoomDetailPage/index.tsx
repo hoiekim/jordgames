@@ -58,9 +58,7 @@ const RoomDetailPage = () => {
         { log: false }
       );
     }
-  }, [params, path, setRooms, id]);
-
-  useEffect(() => {}, []);
+  }, [params, path, setRooms, id, router]);
 
   const room = rooms.get(id);
   if (!room) return <div>Not Found</div>;
@@ -80,7 +78,11 @@ const RoomDetailPage = () => {
           {isResultOpen ? "Back to Vote" : "See Result"}
         </button>
       </h2>
-      <div className="gameRows">{gameRows}</div>
+      {isResultOpen ? (
+        <div className="result"></div>
+      ) : (
+        <div className="gameRows">{gameRows}</div>
+      )}
     </div>
   );
 };
