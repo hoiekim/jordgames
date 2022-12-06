@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { RoomStreamGetResponse } from "back/routes";
-import { Room, Subscriber } from "back/lib";
-import { read, PATH, useAppContext } from "front";
-import { call } from "front/lib";
+import { Game, Room, Subscriber } from "back/lib";
+import { call, read, PATH, useAppContext, getCombos } from "front";
 import GameRow from "./GameRow";
 
 const RoomDetailPage = () => {
@@ -10,6 +9,9 @@ const RoomDetailPage = () => {
   const { path, transition, params } = router;
   const { incomingPath, incomingParams } = transition;
   const [isResultOpen, setIsResultOpen] = useState(false);
+  const [gameCombos, setGameCombos] = useState<Game[][] | null>(null);
+
+  const init = useRef(false);
 
   const id =
     (path === PATH.ROOM
@@ -18,9 +20,13 @@ const RoomDetailPage = () => {
       ? incomingParams.get("id")
       : "") || "";
 
-  const init = useRef(false);
+  const room = rooms.get(id);
 
   useEffect(() => () => setIsResultOpen(false), []);
+
+  useEffect(() => {
+    if (room) getCombos(room).then(setGameCombos);
+  }, [room]);
 
   useEffect(() => {
     if (path === PATH.ROOM && !init.current && id) {
@@ -62,18 +68,23 @@ const RoomDetailPage = () => {
     }
   }, [params, path, setRooms, id, router]);
 
-  const room = rooms.get(id);
   if (!room) return <div>Not Found</div>;
 
   const { games } = room;
   const gameRows = games.map((game) => (
-    <GameRow
-      key={`gameRow_${game.id}`}
-      room_id={id}
-      game={game}
-      isResultOpen={isResultOpen}
-    />
+    <GameRow key={`gameRow_${game.id}`} room_id={id} game={game} />
   ));
+
+  const gameComboRows = gameCombos?.map((combo) => {
+    const gameRows = combo.map((game) => (
+      <GameRow key={`gameRow_${game.id}`} room_id={id} game={game} />
+    ));
+    return (
+      <div key={`gameComboRow_${combo[0].id}_${combo[1].id}`} className="gameComboRow">
+        {gameRows}
+      </div>
+    );
+  });
 
   const seeResult = () => setIsResultOpen((s) => !s);
 
@@ -83,7 +94,11 @@ const RoomDetailPage = () => {
         <span>{room.name}</span>
         <button onClick={seeResult}>{isResultOpen ? "Vote Again" : "See Result"}</button>
       </h2>
-      <div className="gameRows">{gameRows}</div>
+      {isResultOpen ? (
+        <div className="gameComboRows">{gameComboRows}</div>
+      ) : (
+        <div className="gameRows">{gameRows}</div>
+      )}
     </div>
   );
 };

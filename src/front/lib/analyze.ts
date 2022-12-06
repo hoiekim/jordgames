@@ -1,23 +1,7 @@
-import { Game, Room, User } from "back/lib";
+import { Game, Room } from "back/lib";
 import { BggGameDetail } from "front/lib";
 
-export class RecommendedGame extends Game {
-  players: User[];
-  unHappyPlayers: User[];
-
-  constructor(game: Game, players: User[]) {
-    super(game);
-    this.players = players;
-    this.unHappyPlayers = players.filter((user) => {
-      return !this.votes.find((voter) => voter.id === user.id);
-    });
-  }
-}
-
-export const getRecommendations = async (
-  room: Room,
-  retry = 0
-): Promise<RecommendedGame[] | null> => {
+export const getCombos = async (room: Room, retry = 0): Promise<Game[][] | null> => {
   if (retry > 5) return null;
 
   return new Promise((res) => {
@@ -35,6 +19,8 @@ export const getRecommendations = async (
         })
       );
 
+      const users = games.flatMap(({ votes }) => votes);
+
       const gamesVotedMoreThanMinPlayers = games.filter(({ id, votes }) => {
         return votes.length > +(gameDetails.get(id)?.detail?.minplayers || 0);
       });
@@ -43,20 +29,28 @@ export const getRecommendations = async (
         return b.votes.length - a.votes.length;
       });
 
-      const users = new Map(
-        games.flatMap(({ votes }) => votes.map((user) => [user.id, user]))
-      );
-
-      const combos = new Map<string, RecommendedGame[]>();
+      const combos: Game[][] = [];
 
       for (let i = 0; i < gamesSortedByVotes.length; i++) {
-        for (let j = 0; j < gamesSortedByVotes.length; j++) {}
+        for (let j = i + 1; j < gamesSortedByVotes.length; j++) {
+          const first = gamesSortedByVotes[i];
+          const second = gamesSortedByVotes[j];
+          const anyNonPlayer = !!users.find((user) => {
+            return ![...first.votes, ...second.votes].find(
+              (voter) => voter.id === user.id
+            );
+          });
+          if (anyNonPlayer) continue;
+          combos.push([first, second]);
+        }
       }
 
-      res([{} as RecommendedGame]);
+      console.log(combos);
+
+      res(combos);
     } catch (err) {
       setTimeout(async () => {
-        const result = await getRecommendations(room, retry + 1);
+        const result = await getCombos(room, retry + 1);
         res(result);
       }, 1000);
     }
