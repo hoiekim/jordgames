@@ -20,6 +20,8 @@ const RoomDetailPage = () => {
 
   const init = useRef(false);
 
+  useEffect(() => () => setIsResultOpen(false), []);
+
   useEffect(() => {
     if (path === PATH.ROOM && !init.current && id) {
       init.current = true;
@@ -65,7 +67,12 @@ const RoomDetailPage = () => {
 
   const { games } = room;
   const gameRows = games.map((game) => (
-    <GameRow key={`gameRow_${game.id}`} room_id={id} game={game} />
+    <GameRow
+      key={`gameRow_${game.id}`}
+      room_id={id}
+      game={game}
+      isResultOpen={isResultOpen}
+    />
   ));
 
   const seeResult = () => setIsResultOpen((s) => !s);
@@ -74,15 +81,9 @@ const RoomDetailPage = () => {
     <div className="RoomDetailPage">
       <h2>
         <span>{room.name}</span>
-        <button onClick={seeResult}>
-          {isResultOpen ? "Back to Vote" : "See Result"}
-        </button>
+        <button onClick={seeResult}>{isResultOpen ? "Vote Again" : "See Result"}</button>
       </h2>
-      {isResultOpen ? (
-        <div className="result"></div>
-      ) : (
-        <div className="gameRows">{gameRows}</div>
-      )}
+      <div className="gameRows">{gameRows}</div>
     </div>
   );
 };

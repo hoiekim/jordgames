@@ -65,7 +65,7 @@ Object.values(routes).forEach(register);
 
 app.use("/api", router);
 
-const clientPath = path.resolve(__dirname, "../client");
+const clientPath = path.resolve(__dirname, "../front");
 app.use(express.static(clientPath));
 
 app.get("*", (req, res) => {

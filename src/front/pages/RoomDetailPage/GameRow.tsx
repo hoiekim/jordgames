@@ -7,9 +7,10 @@ import { useAppContext } from "front/lib";
 interface Props {
   room_id: string;
   game: Game;
+  isResultOpen: boolean;
 }
 
-const GameRow = ({ room_id, game }: Props) => {
+const GameRow = ({ room_id, game, isResultOpen }: Props) => {
   const { user, setRooms } = useAppContext();
   const { id, votes } = game;
 
