@@ -3,6 +3,12 @@
   cursor: default;
 }
 
+*:not(input) {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 body {
   width: 100%;
   margin: 0;

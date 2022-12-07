@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import { Game, User } from "back/lib";
 import { useAppContext } from "front";
-import { useEffect, useState } from "react";
-import GameInfo from "./GameInfo";
+import { GameInfo } from "front/components";
 
 interface Props {
   combo: Game[];
@@ -23,11 +23,13 @@ const Report = ({ combo }: Props) => {
   useEffect(() => {
     const [gameA, gameB] = combo;
 
-    const mapA = new Map(gameA.votes.map((user) => [user.id, new Player(user, false)]));
-    const mapB = new Map(
+    const playersA = new Map(
+      gameA.votes.map((user) => [user.id, new Player(user, false)])
+    );
+    const playersB = new Map(
       gameB.votes
         .filter((user) => {
-          const foundInA = mapA.get(user.id);
+          const foundInA = playersA.get(user.id);
           if (foundInA) {
             foundInA.flexible = true;
             return false;
@@ -39,74 +41,80 @@ const Report = ({ combo }: Props) => {
 
     const minplayersB = +(bggGameDetails.get(gameB.id)?.minplayers.value || 0);
 
-    const iterator = mapA.values();
+    const iterator = playersA.values();
     let e = iterator.next();
 
-    while (minplayersB > mapB.size && !e.done) {
+    while (minplayersB > playersB.size && !e.done) {
       const player = e.value;
       if (player.flexible) {
-        mapB.set(player.id, new Player(player, true));
-        mapA.delete(player.id);
+        playersB.set(player.id, new Player(player, true));
+        playersA.delete(player.id);
       }
       e = iterator.next();
     }
 
-    setPlayers([mapA, mapB]);
+    setPlayers([playersA, playersB]);
   }, [combo, bggGameDetails]);
 
-  const playersTagA = Array.from(players[0].values()).map((player) => {
-    const { id, username, flexible } = player;
-    const classes = ["player"];
-    if (flexible) classes.push("flexible");
-    const onClick = () => {
-      setPlayers(([mapA, mapB]) => {
-        const newMapA = new Map(mapA);
-        const newMapB = new Map(mapB);
-        newMapA.delete(id);
-        newMapB.set(id, player);
-        return [newMapA, newMapB];
-      });
-    };
-    return (
-      <div
-        key={`${gameA.id}_${gameB.id}_${id}`}
-        className={classes.join(" ")}
-        onClick={onClick}
-      >
-        {username}
-      </div>
-    );
-  });
+  const playersTagA = Array.from(players[0].values())
+    .sort((a, b) => +a.flexible - +b.flexible)
+    .map((player) => {
+      const { id, username, flexible } = player;
+      const classes = ["player"];
+      if (flexible) classes.push("flexible");
+      const onClick = () => {
+        if (!flexible) return;
+        setPlayers(([playersA, playersB]) => {
+          const newplayersA = new Map(playersA);
+          const newplayersB = new Map(playersB);
+          newplayersA.delete(id);
+          newplayersB.set(id, player);
+          return [newplayersA, newplayersB];
+        });
+      };
+      return (
+        <div
+          key={`${gameA.id}_${gameB.id}_${id}`}
+          className={classes.join(" ")}
+          onClick={onClick}
+        >
+          {username}
+        </div>
+      );
+    });
 
-  const playersTagB = Array.from(players[1].values()).map((player) => {
-    const { id, username, flexible } = player;
-    const classes = ["player"];
-    if (flexible) classes.push("flexible");
-    const onClick = () => {
-      setPlayers(([mapA, mapB]) => {
-        const newMapA = new Map(mapA);
-        const newMapB = new Map(mapB);
-        newMapB.delete(id);
-        newMapA.set(id, player);
-        return [newMapA, newMapB];
-      });
-    };
-    return (
-      <div
-        key={`${gameA.id}_${gameB.id}_${id}`}
-        className={classes.join(" ")}
-        onClick={onClick}
-      >
-        {username}
-      </div>
-    );
-  });
+  const playersTagB = Array.from(players[1].values())
+    .sort((a, b) => +a.flexible - +b.flexible)
+    .map((player) => {
+      const { id, username, flexible } = player;
+      const classes = ["player"];
+      if (flexible) classes.push("flexible");
+      const onClick = () => {
+        if (!flexible) return;
+        setPlayers(([playersA, playersB]) => {
+          const newplayersA = new Map(playersA);
+          const newplayersB = new Map(playersB);
+          newplayersB.delete(id);
+          newplayersA.set(id, player);
+          return [newplayersA, newplayersB];
+        });
+      };
+      return (
+        <div
+          key={`${gameA.id}_${gameB.id}_${id}`}
+          className={classes.join(" ")}
+          onClick={onClick}
+        >
+          {username}
+        </div>
+      );
+    });
 
   return (
     <div className="Report">
       <div>
-        <GameInfo game={gameA} table={true} />
-        <GameInfo game={gameB} table={true} />
+        <GameInfo game={gameA} vertical={true} />
+        <GameInfo game={gameB} vertical={true} />
       </div>
       <div>
         <div className="voters">{playersTagA}</div>

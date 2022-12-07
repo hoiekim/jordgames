@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import { Game } from "back/lib";
 import { call, BggGameDetail } from "front";
-import "./index.css";
 import { useAppContext } from "front/lib";
+import "./index.css";
 
 interface Props {
   game: Game;
-  table?: boolean;
+  vertical?: boolean;
 }
 
 const fetchJobs = new Map<string, true>();
 
-const GameInfo = ({ game, table }: Props) => {
+const GameInfo = ({ game, vertical }: Props) => {
   const { id } = game;
   const { bggGameDetails, setBggGameDetails } = useAppContext();
   const bggGameDetail = bggGameDetails.get(game.id);
@@ -45,9 +45,9 @@ const GameInfo = ({ game, table }: Props) => {
   const safeName = Array.isArray(name) ? name[0].value : name.value;
   const complexity = +statistics?.ratings?.averageweight?.value || 0;
 
-  if (table)
+  if (vertical)
     return (
-      <div className="GameInfo">
+      <div className="GameInfo vertical">
         <div className="title">{safeName}</div>
         <div className="image">
           <img src={thumbnail} alt={safeName || game.id} />

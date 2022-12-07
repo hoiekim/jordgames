@@ -46,24 +46,14 @@ div.ConfigureRoomPage > div.selectedGames > div > img {
 }
 
 div.ConfigureRoomPage > div > div.gameOption {
-  display: flex;
-  margin: 10px 0;
+  margin: 20px 0;
 }
 
 div.ConfigureRoomPage > div > div.gameOption > div {
-  flex: 1;
-  margin: 0 5px;
+  margin: 5px 0;
 }
 
-div.ConfigureRoomPage > div > div.gameOption > div:first-child {
-  margin-left: 0;
-}
-
-div.ConfigureRoomPage > div > div.gameOption > div:last-child {
-  margin-right: 0;
-}
-
-div.ConfigureRoomPage > div > div.gameOption > div > img {
+div.ConfigureRoomPage > div > div.gameOption > div > button {
   width: 100%;
 }
 

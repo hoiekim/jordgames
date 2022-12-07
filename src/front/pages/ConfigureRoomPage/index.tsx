@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { call, PATH, useAppContext, BggGame } from "front";
 import { Game, Room } from "back/lib";
+import { call, PATH, useAppContext, BggGame } from "front";
+import { GameInfo } from "front/components";
 import "./index.css";
 
 const ConfigureRoomPage = () => {
@@ -71,7 +72,7 @@ const ConfigureRoomPage = () => {
   const gameOptions = gameCollection
     .filter((e) => !selectedGames.has(e))
     .map((e, i) => {
-      const { name, image } = e;
+      const { name, objectid: id } = e;
       const addGame = () => {
         setSelectedGames((oldValue) => {
           const newValue = new Set(oldValue);
@@ -81,14 +82,9 @@ const ConfigureRoomPage = () => {
       };
       return (
         <div className="gameOption" key={i + "_" + name}>
+          <GameInfo game={new Game({ name, id })} />
           <div>
-            <img src={image} alt={name} />
-          </div>
-          <div>
-            <div>{name}</div>
-            <div>
-              <button onClick={addGame}>Choose</button>
-            </div>
+            <button onClick={addGame}>Choose</button>
           </div>
         </div>
       );

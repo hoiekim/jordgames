@@ -1,17 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { RoomStreamGetResponse } from "back/routes";
-import { Game, Room, Subscriber } from "back/lib";
-import { call, read, PATH, useAppContext } from "front";
+import { Room, Subscriber } from "back/lib";
+import { call, read, PATH, useAppContext, useCombos } from "front";
 import GameRow from "./GameRow";
-import { getCombos } from "./analyze";
 import Report from "./Report";
+import "./index.css";
 
 const RoomDetailPage = () => {
   const { rooms, setRooms, router } = useAppContext();
   const { path, transition, params } = router;
   const { incomingPath, incomingParams } = transition;
   const [isResultOpen, setIsResultOpen] = useState(false);
-  const [gameCombos, setGameCombos] = useState<Game[][] | null>(null);
 
   const init = useRef(false);
 
@@ -23,12 +22,9 @@ const RoomDetailPage = () => {
       : "") || "";
 
   const room = rooms.get(id);
+  const gameCombos = useCombos(room);
 
   useEffect(() => () => setIsResultOpen(false), []);
-
-  useEffect(() => {
-    if (room) getCombos(room).then(setGameCombos);
-  }, [room, rooms]);
 
   useEffect(() => {
     if (path === PATH.ROOM && !init.current && id) {
@@ -81,7 +77,11 @@ const RoomDetailPage = () => {
     return <Report key={`${combo[0]?.id}_${combo[1]?.id}`} combo={combo} />;
   });
 
-  const seeResult = () => setIsResultOpen((s) => !s);
+  const seeResult = () => {
+    console.log(room);
+    console.log(gameCombos);
+    setIsResultOpen((s) => !s);
+  };
 
   return (
     <div className="RoomDetailPage">

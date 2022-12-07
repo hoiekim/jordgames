@@ -1,0 +1,53 @@
+div.GameInfo:not(.vertical) {
+  display: flex;
+  align-items: flex-start;
+}
+
+div.GameInfo.vertical {
+  overflow: hidden;
+}
+
+div.GameInfo:not(.vertical) > div {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+div.GameInfo.vertical > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+div.GameInfo:not(.vertical) > div:first-child {
+  margin-left: 0;
+}
+
+div.GameInfo:not(.vertical) > div:last-child {
+  margin-right: 0;
+}
+
+div.GameInfo:not(.vertical) > div > img {
+  width: 80px;
+}
+
+div.GameInfo div.title {
+  font-weight: bold;
+  margin: 5px 0 10px;
+}
+
+div.GameInfo.vertical {
+  margin: 0 10px;
+}
+
+div.GameInfo.vertical:first-child {
+  margin-left: 0;
+}
+
+div.GameInfo.vertical:last-child {
+  margin-right: 0;
+}
+
+div.GameInfo div.line {
+  margin: 5px 0;
+  font-size: 12px;
+}

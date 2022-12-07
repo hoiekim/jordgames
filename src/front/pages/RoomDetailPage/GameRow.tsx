@@ -1,7 +1,6 @@
 import { Game } from "back/lib";
 import { useAppContext, call } from "front";
-import GameInfo from "./GameInfo";
-import "./index.css";
+import { GameInfo } from "front/components";
 
 interface Props {
   room_id: string;

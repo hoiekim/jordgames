@@ -22,40 +22,8 @@ div.GameRow > div {
   margin: 5px 0;
 }
 
-div.GameRow > div.GameInfo {
-  display: flex;
-  align-items: flex-start;
-}
-
-div.GameRow > div.GameInfo > div {
-  display: inline-block;
-  margin: 0 5px;
-}
-
-div.GameRow > div.GameInfo > div:first-child {
-  margin-left: 0;
-}
-
-div.GameRow > div.GameInfo > div:last-child {
-  margin-right: 0;
-}
-
-div.GameRow > div.GameInfo > div > img {
-  width: 80px;
-}
-
 div.GameRow > div > button {
   width: 100%;
-}
-
-div.GameInfo div.title {
-  font-weight: bold;
-  margin: 5px 0 10px;
-}
-
-div.GameInfo div.line {
-  margin: 5px 0;
-  font-size: 12px;
 }
 
 div.Report > div > div.voters > div,
@@ -77,20 +45,14 @@ div.Report {
   padding: 10px;
 }
 
+div.Report:last-child {
+  border-bottom: none;
+}
+
 div.Report > div {
   display: flex;
 }
 
 div.Report > div > div {
   flex: 1;
-}
-
-div.Report > div > div.GameInfo {
-  overflow: hidden;
-}
-
-div.Report > div > div.GameInfo > div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
