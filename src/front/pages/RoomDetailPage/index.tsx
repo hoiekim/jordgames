@@ -4,7 +4,7 @@ import { Game, Room, Subscriber } from "back/lib";
 import { call, read, PATH, useAppContext } from "front";
 import GameRow from "./GameRow";
 import { getCombos } from "./analyze";
-import GameThumbnail from "./GameThumbnail";
+import Report from "./Report";
 
 const RoomDetailPage = () => {
   const { rooms, setRooms, router } = useAppContext();
@@ -78,14 +78,7 @@ const RoomDetailPage = () => {
   ));
 
   const gameComboRows = gameCombos?.map((combo) => {
-    const gameRows = combo.map((game) => (
-      <GameThumbnail key={`gameRow_${game.id}`} game={game} />
-    ));
-    return (
-      <div key={`gameComboRow_${combo[0].id}_${combo[1].id}`} className="gameComboRow">
-        {gameRows}
-      </div>
-    );
+    return <Report key={`${combo[0]?.id}_${combo[1]?.id}`} combo={combo} />;
   });
 
   const seeResult = () => setIsResultOpen((s) => !s);

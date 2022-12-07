@@ -22,25 +22,25 @@ div.GameRow > div {
   margin: 5px 0;
 }
 
-div.GameRow > div.gameInfo {
+div.GameRow > div.GameInfo {
   display: flex;
   align-items: flex-start;
 }
 
-div.GameRow > div.gameInfo > div {
+div.GameRow > div.GameInfo > div {
   display: inline-block;
   margin: 0 5px;
 }
 
-div.GameRow > div.gameInfo > div:first-child {
+div.GameRow > div.GameInfo > div:first-child {
   margin-left: 0;
 }
 
-div.GameRow > div.gameInfo > div:last-child {
+div.GameRow > div.GameInfo > div:last-child {
   margin-right: 0;
 }
 
-div.GameRow > div.gameInfo > div > img {
+div.GameRow > div.GameInfo > div > img {
   width: 80px;
 }
 
@@ -48,6 +48,17 @@ div.GameRow > div > button {
   width: 100%;
 }
 
+div.GameInfo div.title {
+  font-weight: bold;
+  margin: 5px 0 10px;
+}
+
+div.GameInfo div.line {
+  margin: 5px 0;
+  font-size: 12px;
+}
+
+div.Report > div > div.voters > div,
 div.GameRow > div.voters > div,
 div.GameThumbnail > div.voters > div {
   display: inline-block;
@@ -57,28 +68,29 @@ div.GameThumbnail > div.voters > div {
   padding: 3px 5px;
 }
 
-div.RoomDetailPage > div.gameComboRows > div.gameComboRow {
+div.Report > div > div.voters > div:not(.flexible) {
+  background-color: #ccc;
+}
+
+div.Report {
   border-bottom: 1px #aaa solid;
-  display: flex;
   padding: 10px;
 }
 
-div.GameThumbnail > div > div {
-  margin: 5px 0;
+div.Report > div {
+  display: flex;
 }
 
-div.GameThumbnail > div > div.title {
-  min-height: 30px;
-}
-
-div.GameThumbnail > div > div.imageDiv {
-  min-height: 100px;
-}
-
-div.GameThumbnail img {
-  width: 100px;
-}
-
-div.GameThumbnail {
+div.Report > div > div {
   flex: 1;
+}
+
+div.Report > div > div.GameInfo {
+  overflow: hidden;
+}
+
+div.Report > div > div.GameInfo > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

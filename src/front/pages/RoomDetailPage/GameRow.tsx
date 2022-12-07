@@ -1,8 +1,7 @@
-import { useEffect, useRef } from "react";
 import { Game } from "back/lib";
-import { call, useLocalStorage, BggGameDetail } from "front";
+import { useAppContext, call } from "front";
+import GameInfo from "./GameInfo";
 import "./index.css";
-import { useAppContext } from "front/lib";
 
 interface Props {
   room_id: string;
@@ -12,38 +11,6 @@ interface Props {
 const GameRow = ({ room_id, game }: Props) => {
   const { user, setRooms } = useAppContext();
   const { id, votes } = game;
-
-  const [bggGameDetail, setBggGameDetail] = useLocalStorage<BggGameDetail | undefined>(
-    `bggGameDetail_${id}`,
-    undefined
-  );
-
-  const init = useRef(false);
-
-  useEffect(() => {
-    if (init.current || bggGameDetail) return;
-    init.current = true;
-    const paramString = new URLSearchParams({ id, stats: "1" }).toString();
-    type BggGameDetailResponse = { items: { item: BggGameDetail } };
-    call.bgg.get<BggGameDetailResponse>("/thing?" + paramString).then((r) => {
-      setBggGameDetail(new BggGameDetail(r.items.item));
-    });
-  }, [bggGameDetail, id, setBggGameDetail]);
-
-  if (!bggGameDetail) return <></>;
-
-  const {
-    name,
-    thumbnail,
-    minplayers,
-    maxplayers,
-    minplaytime,
-    maxplaytime,
-    statistics,
-  } = bggGameDetail || {};
-
-  const safeName = Array.isArray(name) ? name[0].value : name.value;
-  const complexity = +statistics?.ratings?.averageweight?.value || 0;
 
   const isVoted = game.votes.find((e) => e.id === user?.id);
 
@@ -89,28 +56,7 @@ const GameRow = ({ room_id, game }: Props) => {
 
   return (
     <div className="GameRow">
-      <div className="gameInfo">
-        <div>
-          <img src={thumbnail} alt={safeName || game.id} />
-        </div>
-        <div>
-          <div>{safeName}</div>
-          <div>
-            <span>
-              {minplayers.value} - {maxplayers.value} players
-            </span>
-          </div>
-          <div>
-            <span>Complexity:&nbsp;</span>
-            <span>{complexity.toFixed(1)} / 5</span>
-          </div>
-          <div>
-            <span>
-              {minplaytime.value} - {maxplaytime.value} mins
-            </span>
-          </div>
-        </div>
-      </div>
+      <GameInfo game={game} />
       <div>
         <button onClick={onClickVote}>Vote</button>
       </div>

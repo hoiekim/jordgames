@@ -18,7 +18,9 @@ export const getCombos = async (room: Room, retry = 0): Promise<Game[][] | null>
         })
       );
 
-      const users = games.flatMap(({ votes }) => votes);
+      const users = new Map(
+        games.flatMap(({ votes }) => votes).map((user) => [user.id, user])
+      );
 
       const gamesVotedMoreThanMinPlayers = games.filter(({ id, votes }) => {
         return votes.length >= +(gameDetails.get(id)?.minplayers?.value || 0);
@@ -32,15 +34,22 @@ export const getCombos = async (room: Room, retry = 0): Promise<Game[][] | null>
 
       for (let i = 0; i < gamesSortedByVotes.length; i++) {
         for (let j = i + 1; j < gamesSortedByVotes.length; j++) {
-          const first = gamesSortedByVotes[i];
-          const second = gamesSortedByVotes[j];
-          const anyNonPlayer = !!users.find((user) => {
-            return ![...first.votes, ...second.votes].find(
-              (voter) => voter.id === user.id
-            );
+          const gameA = gamesSortedByVotes[i];
+          const gameB = gamesSortedByVotes[j];
+          let anyNonPlayer = false;
+          users.forEach((user) => {
+            const allVotes = [...gameA.votes, ...gameB.votes];
+            const found = allVotes.find((voter) => voter.id === user.id);
+            if (!found) anyNonPlayer = true;
           });
           if (anyNonPlayer) continue;
-          combos.push([first, second]);
+          const minPlayersA = +(gameDetails.get(gameA.id)?.minplayers.value || 0);
+          const maxPlayersA = +(gameDetails.get(gameA.id)?.maxplayers.value || 0);
+          const minPlayersB = +(gameDetails.get(gameB.id)?.minplayers.value || 0);
+          const maxPlayersB = +(gameDetails.get(gameB.id)?.maxplayers.value || 0);
+          if (users.size < minPlayersA + minPlayersB) continue;
+          if (users.size > maxPlayersA + maxPlayersB) continue;
+          combos.push([gameA, gameB]);
         }
       }
 
