@@ -12,10 +12,10 @@ Pull latest released image from [hoie/jordgames](https://hub.docker.com/r/hoie/j
 docker pull hoie/jordgames
 ```
 
-You still need environment variables defined in `.env.local` file so run command for example:
+Run!
 
 ```
-docker run --env-file ./.env.local -p 3500:3500 hoie/jordgames
+docker run -p 3003:3003 hoie/jordgames
 ```
 
 Now Jordgames app should be live [here](http://localhost:3003). Take a look!
@@ -26,12 +26,6 @@ First, download Jordgames with this command in your terminal. This command will 
 
 ```
 git clone https://github.com/hoiekim/jordgames.git
-```
-
-Place `.env.local` file in the root of jordgames directory.
-
-```
-mv .env.local ./jordgames/.env.local
 ```
 
 Make sure you have [npm](https://npmjs.com) installed in your machine and available in your terminal. Then use this command to install Jordgames.
