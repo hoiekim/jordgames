@@ -3,6 +3,11 @@ import { Game, Room } from "back/lib";
 import { call, PATH, useAppContext, BggGame } from "front";
 import { GameInfo } from "front/components";
 import "./index.css";
+import { useLocalStorage } from "front/lib";
+
+export type BggCollections = Map<string, BggGame[]>;
+
+const DEFUALT_COLLECTION = "JordGames";
 
 const ConfigureRoomPage = () => {
   const { router, setRooms } = useAppContext();
@@ -16,22 +21,33 @@ const ConfigureRoomPage = () => {
       : "") || "";
 
   const [nameInput, setNameInput] = useState("");
+  const [showAdvancedConfig, setShowAdvancedConfig] = useState(false);
+  const [collectionUsernameInput, setCollectionUsernameInput] = useLocalStorage(
+    "collectionUsernameInput",
+    "JordGames"
+  );
+  const [collectionUsername, setCollectionUsername] = useState(DEFUALT_COLLECTION);
   const [selectedGames, setSelectedGames] = useState<Set<BggGame>>(new Set());
-  const [gameCollection, setGameCollection] = useState<BggGame[]>([]);
+  const [bggCollections, setBggCollections] = useState<BggCollections>(new Map());
 
-  const init = useRef(false);
+  const bggCollection = bggCollections.get(collectionUsername);
 
   useEffect(() => {
-    if (path !== PATH.CONFIGURE_ROOM || init.current) return;
-    init.current = true;
+    if (path !== PATH.CONFIGURE_ROOM || bggCollection) return;
 
     type CollectionResponse = { items: { item: BggGame[] } };
-    const paramString = new URLSearchParams({ username: "JordGames" }).toString();
+    const paramString = new URLSearchParams({
+      username: collectionUsername,
+    }).toString();
 
     call.bgg.get<CollectionResponse>("/collection?" + paramString).then((r) => {
-      setGameCollection(r.items.item);
+      setBggCollections((oldValue) => {
+        const newValue = new Map(oldValue);
+        newValue.set(collectionUsername, r.items.item);
+        return newValue;
+      });
     });
-  }, [path]);
+  }, [path, collectionUsername]);
 
   const selectedGamesArray = Array.from(selectedGames.values());
 
@@ -69,36 +85,65 @@ const ConfigureRoomPage = () => {
     );
   });
 
-  const gameOptions = gameCollection
-    .filter((e) => !selectedGames.has(e))
-    .map((e, i) => {
-      const { name, objectid: id } = e;
-      const addGame = () => {
-        setSelectedGames((oldValue) => {
-          const newValue = new Set(oldValue);
-          newValue.add(e);
-          return newValue;
-        });
-      };
-      return (
-        <div className="gameOption" key={i + "_" + name}>
-          <GameInfo game={new Game({ name, id })} />
-          <div>
-            <button onClick={addGame}>Choose</button>
+  const gameOptions =
+    bggCollection &&
+    Array.from(bggCollection.values())
+      .filter((e) => !selectedGames.has(e))
+      .map((e, i) => {
+        const { name, objectid: id } = e;
+        const addGame = () => {
+          setSelectedGames((oldValue) => {
+            const newValue = new Set(oldValue);
+            newValue.add(e);
+            return newValue;
+          });
+        };
+        return (
+          <div className="gameOption" key={i + "_" + name}>
+            <GameInfo game={new Game({ name, id })} />
+            <div>
+              <button onClick={addGame}>Choose</button>
+            </div>
           </div>
-        </div>
-      );
-    });
+        );
+      });
 
   return (
     <div className="ConfigureRoomPage">
-      <h2>Configure Room</h2>
+      <h2>
+        <span>Configure Room</span>
+        <button
+          onClick={() => {
+            if (showAdvancedConfig) {
+              setCollectionUsernameInput(DEFUALT_COLLECTION);
+              setCollectionUsername(DEFUALT_COLLECTION);
+            }
+            window.scrollTo(0, 0);
+            setShowAdvancedConfig(!showAdvancedConfig);
+          }}
+        >
+          Advanced
+        </button>
+      </h2>
+      {showAdvancedConfig && (
+        <div className="collectionUsername">
+          <span>Collection Username:&nbsp;</span>
+          <input
+            value={collectionUsernameInput}
+            onChange={(e) => setCollectionUsernameInput(e.target.value)}
+            onBlur={() => setCollectionUsername(collectionUsernameInput)}
+            onKeyUp={(e) =>
+              e.key === "Enter" && setCollectionUsername(collectionUsernameInput)
+            }
+          ></input>
+        </div>
+      )}
       <div className="roomName">
         <span>Room Name:&nbsp;</span>
         <input value={nameInput} onChange={(e) => setNameInput(e.target.value)}></input>
       </div>
       <div className="selectedGames">{selectedGameThumbnails}</div>
-      <div>{gameOptions}</div>
+      <div>{gameOptions || ""}</div>
       <div className="completeButton">
         <button onClick={createRoom}>Complete</button>
       </div>

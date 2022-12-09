@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useAppContext, call, PATH } from "front";
 import { User } from "back/lib";
+import { useAppContext, call, PATH } from "front";
+import { Logo } from "front/components";
 import "./index.css";
 
 const LoginPage = () => {
@@ -21,17 +22,22 @@ const LoginPage = () => {
 
   return (
     <div className="LoginPage">
-      <h2>What is your name?</h2>
-      <div className="inputArea">
-        <div>
-          <input
-            value={usernameInput}
-            onChange={(e) => setUsernameInput(e.target.value)}
-            onKeyUp={(e) => e.key === "Enter" && onClick()}
-          ></input>
+      <div className="flexBox">
+        <div className="logo">
+          <Logo />
         </div>
-        <div>
-          <button onClick={onClick}>Enter</button>
+        <h2>What is your name?</h2>
+        <div className="inputArea">
+          <div>
+            <input
+              value={usernameInput}
+              onChange={(e) => setUsernameInput(e.target.value)}
+              onKeyUp={(e) => e.key === "Enter" && onClick()}
+            ></input>
+          </div>
+          <div>
+            <button onClick={onClick}>Enter</button>
+          </div>
         </div>
       </div>
     </div>

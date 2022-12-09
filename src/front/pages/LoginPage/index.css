@@ -1,14 +1,32 @@
-div.LoginPage > h2 {
+div.LoginPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100vh - 200px);
+}
+
+div.LoginPage > div.flexBox > div.logo {
+  margin: 20px 0;
   text-align: center;
 }
 
-div.LoginPage > div.inputArea {
+div.LoginPage > div.flexBox > div.logo {
+  margin: 20px 0;
+  text-align: center;
+}
+
+div.LoginPage > div.flexBox > h2 {
+  text-align: center;
+}
+
+div.LoginPage > div.flexBox > div.inputArea {
   padding: 0 10px;
   text-align: center;
 }
 
-div.LoginPage > div.inputArea > div > input,
-div.LoginPage > div.inputArea > div > button {
+div.LoginPage > div.flexBox > div.inputArea > div > input,
+div.LoginPage > div.flexBox > div.inputArea > div > button {
   text-align: center;
   width: 200px;
   margin: 5px 0;

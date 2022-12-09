@@ -7,6 +7,16 @@ div.ConfigureRoomPage > h2 {
   z-index: 110;
 }
 
+div.ConfigureRoomPage > h2 > button {
+  position: relative;
+  top: -5px;
+  margin-left: 5px;
+}
+
+div.ConfigureRoomPage > div.collectionUsername {
+  margin-bottom: 10px;
+}
+
 div.ConfigureRoomPage > div.roomName {
   margin: 0;
   position: sticky;

@@ -1,6 +1,6 @@
 import { createContext, useContext, Dispatch, SetStateAction } from "react";
 import { Room, User } from "back/lib";
-import { BggGameDetail, ClientRouter } from "front";
+import { BggGame, BggGameDetail, ClientRouter } from "front";
 
 export type Rooms = Map<string, Room>;
 export type BggGameDetails = Map<string, BggGameDetail>;
