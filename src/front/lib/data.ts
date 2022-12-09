@@ -8,9 +8,19 @@ export class BggGame {
   thumbnail = "";
   yearpublished = "";
 
-  constructor(init: Partial<BggGame> & { id: string }) {
+  constructor(init: Partial<BggGame> & { objectid: string }) {
     if (init) Object.assign(this, init);
   }
+
+  static fromDetail = ({ id, name, image, thumbnail, yearpublished }: BggGameDetail) => {
+    return new BggGame({
+      objectid: id,
+      name: Array.isArray(name) ? name[0].value : name.value,
+      image,
+      thumbnail,
+      yearpublished,
+    });
+  };
 }
 
 type SimpleValueObject = { value: string };

@@ -77,11 +77,7 @@ const RoomDetailPage = () => {
     return <Report key={`${combo[0]?.id}_${combo[1]?.id}`} combo={combo} />;
   });
 
-  const seeResult = () => {
-    console.log(room);
-    console.log(gameCombos);
-    setIsResultOpen((s) => !s);
-  };
+  const seeResult = () => setIsResultOpen((s) => !s);
 
   return (
     <div className="RoomDetailPage">

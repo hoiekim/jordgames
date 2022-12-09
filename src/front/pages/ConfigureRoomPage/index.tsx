@@ -1,16 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Game, Room } from "back/lib";
-import { call, PATH, useAppContext, BggGame } from "front";
+import { NewRoomGetResponse } from "back/routes";
+import { call, PATH, useAppContext, BggGame, useLocalStorage } from "front";
 import { GameInfo } from "front/components";
 import "./index.css";
-import { useLocalStorage } from "front/lib";
-
-export type BggCollections = Map<string, BggGame[]>;
 
 const DEFUALT_COLLECTION = "JordGames";
 
 const ConfigureRoomPage = () => {
-  const { router, setRooms } = useAppContext();
+  const { router, rooms, setRooms, bggCollections, setBggCollections, bggGameDetails } =
+    useAppContext();
   const { path, params, transition } = router;
   const { incomingPath, incomingParams } = transition;
   const id =
@@ -20,17 +19,41 @@ const ConfigureRoomPage = () => {
       ? incomingParams.get("id")
       : "") || "";
 
-  const [nameInput, setNameInput] = useState("");
+  const room = rooms.get(id);
+
+  const [nameInput, setNameInput] = useState(room?.name || "");
   const [showAdvancedConfig, setShowAdvancedConfig] = useState(false);
   const [collectionUsernameInput, setCollectionUsernameInput] = useLocalStorage(
     "collectionUsernameInput",
     "JordGames"
   );
   const [collectionUsername, setCollectionUsername] = useState(DEFUALT_COLLECTION);
-  const [selectedGames, setSelectedGames] = useState<Set<BggGame>>(new Set());
-  const [bggCollections, setBggCollections] = useState<BggCollections>(new Map());
+  const [selectedGames, setSelectedGames] = useState<Map<string, BggGame>>(() => {
+    if (!room) return new Map();
+    return new Map(
+      room.games.map(({ id }) => {
+        const bggGameDetail = bggGameDetails.get(id);
+        if (bggGameDetail) return [id, BggGame.fromDetail(bggGameDetail)];
+        else return [id, new BggGame({ objectid: id })];
+      })
+    );
+  });
 
   const bggCollection = bggCollections.get(collectionUsername);
+
+  useEffect(() => {
+    if (!room) return;
+    setNameInput(room.name || "");
+    setSelectedGames((oldValue) => {
+      const newValue = new Map(oldValue);
+      room.games.forEach(({ id }) => {
+        const bggGameDetail = bggGameDetails.get(id);
+        if (bggGameDetail) newValue.set(id, BggGame.fromDetail(bggGameDetail));
+        else newValue.set(id, new BggGame({ objectid: id }));
+      });
+      return newValue;
+    });
+  }, [id, bggGameDetails, room]);
 
   useEffect(() => {
     if (path !== PATH.CONFIGURE_ROOM || bggCollection) return;
@@ -47,21 +70,41 @@ const ConfigureRoomPage = () => {
         return newValue;
       });
     });
-  }, [path, collectionUsername]);
+  }, [path, collectionUsername, bggCollection, setBggCollections]);
 
   const selectedGamesArray = Array.from(selectedGames.values());
 
-  const createRoom = () => {
-    if (!id || !nameInput || !selectedGames.size) return;
+  const createRoom = async () => {
+    const alerts = [];
+
+    if (!nameInput) alerts.push("set the name of the room");
+    const { size } = selectedGames;
+    if (size < 3 || 100 < size) alerts.push("choose more than 3 & less than 100 games");
+    if (alerts.length) return window.alert("Please " + alerts.join(" and ") + ".");
+
     const games = selectedGamesArray.map(
       ({ objectid: id, name }) => new Game({ id, name })
     );
-    const newRoom = new Room({ id, name: nameInput, games });
+
+    let newRoom: Room | undefined;
+
+    if (id) {
+      newRoom = new Room({ id, name: nameInput, games });
+    } else {
+      await call.get<NewRoomGetResponse>("/api/new-room").then(({ status, data }) => {
+        if (status === "success" && data) {
+          newRoom = new Room({ id: data.id, name: nameInput, games });
+        }
+      });
+    }
+
+    if (!newRoom) return;
+
     call.post("/api/room", newRoom).then((r) => {
       if (r.status === "success") {
         setRooms((oldRooms) => {
           const newRooms = new Map(oldRooms);
-          newRooms.set(id, newRoom);
+          if (newRoom) newRooms.set(newRoom.id, newRoom);
           return newRooms;
         });
         router.go(PATH.ROOMS);
@@ -73,8 +116,8 @@ const ConfigureRoomPage = () => {
     const { objectid, name, thumbnail } = e;
     const removeGame = () => {
       setSelectedGames((oldValue) => {
-        const newValue = new Set(oldValue);
-        newValue.delete(e);
+        const newValue = new Map(oldValue);
+        newValue.delete(objectid);
         return newValue;
       });
     };
@@ -88,13 +131,13 @@ const ConfigureRoomPage = () => {
   const gameOptions =
     bggCollection &&
     Array.from(bggCollection.values())
-      .filter((e) => !selectedGames.has(e))
+      .filter(({ objectid }) => !selectedGames.has(objectid))
       .map((e, i) => {
         const { name, objectid: id } = e;
         const addGame = () => {
           setSelectedGames((oldValue) => {
-            const newValue = new Set(oldValue);
-            newValue.add(e);
+            const newValue = new Map(oldValue);
+            newValue.set(id, e);
             return newValue;
           });
         };

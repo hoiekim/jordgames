@@ -1,7 +1,7 @@
 import { useState, ReactNode } from "react";
 import { ContextType, Context, useRouter, Rooms, useLocalStorage } from "front";
 import { User } from "back/lib";
-import { BggGameDetails } from "front/lib";
+import { BggCollections, BggGameDetails } from "front/lib";
 
 interface Props {
   initialUser: ContextType["user"];
@@ -11,6 +11,7 @@ interface Props {
 const AppContext = ({ initialUser, children }: Props) => {
   const [rooms, setRooms] = useState<Rooms>(new Map());
   const [user, setUser] = useState<User | undefined>(initialUser);
+  const [bggCollections, setBggCollections] = useState<BggCollections>(new Map());
   const [bggGameDetails, setBggGameDetails] = useLocalStorage<BggGameDetails>(
     "map_bggGameDetails",
     new Map()
@@ -24,6 +25,8 @@ const AppContext = ({ initialUser, children }: Props) => {
     router,
     rooms,
     setRooms,
+    bggCollections,
+    setBggCollections,
     bggGameDetails,
     setBggGameDetails,
   };
