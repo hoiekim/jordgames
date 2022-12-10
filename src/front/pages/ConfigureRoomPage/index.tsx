@@ -5,7 +5,7 @@ import { call, PATH, useAppContext, BggGame, useLocalStorage } from "front";
 import { GameInfo } from "front/components";
 import "./index.css";
 
-const DEFUALT_COLLECTION = "JordGames";
+const DEFUALT_COLLECTION = "jordgames";
 
 const ConfigureRoomPage = () => {
   const { router, rooms, setRooms, bggCollections, setBggCollections, bggGameDetails } =
@@ -25,7 +25,7 @@ const ConfigureRoomPage = () => {
   const [showAdvancedConfig, setShowAdvancedConfig] = useState(false);
   const [collectionUsernameInput, setCollectionUsernameInput] = useLocalStorage(
     "collectionUsernameInput",
-    "JordGames"
+    DEFUALT_COLLECTION
   );
   const [collectionUsername, setCollectionUsername] = useState(DEFUALT_COLLECTION);
   const [selectedGames, setSelectedGames] = useState<Map<string, BggGame>>(() => {
@@ -165,12 +165,12 @@ const ConfigureRoomPage = () => {
             setShowAdvancedConfig(!showAdvancedConfig);
           }}
         >
-          Advanced
+          {showAdvancedConfig ? "Use Default" : "Use Advanced"}
         </button>
       </h2>
       {showAdvancedConfig && (
         <div className="collectionUsername">
-          <span>Collection Username:&nbsp;</span>
+          <span>Collection:&nbsp;</span>
           <input
             value={collectionUsernameInput}
             onChange={(e) => setCollectionUsernameInput(e.target.value)}

@@ -68,7 +68,7 @@ input {
   border: none;
   height: 24px;
   font-size: 16px;
-  padding: 0;
+  padding: 0 5px;
   outline: 0;
 }
 
@@ -91,7 +91,7 @@ code {
 
 div#root {
   max-width: 950px;
-  min-height: 100vh;
+  min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   margin: auto;
   background-color: #fff;
 }
@@ -111,10 +111,9 @@ div.Router {
 
 div.Router > div {
   width: min(100vw, 950px);
-  min-height: 100vh;
+  min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   background-color: #fff;
-  padding: calc(50px + env(safe-area-inset-top)) env(safe-area-inset-right)
-    calc(90px + env(safe-area-inset-bottom)) env(safe-area-inset-left);
+  padding-top: 50px;
 }
 
 div.Router > div.previousPage {

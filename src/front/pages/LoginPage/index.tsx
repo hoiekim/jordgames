@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User } from "back/lib";
+import { User, nameFormat } from "back/lib";
 import { useAppContext, call, PATH } from "front";
 import { Logo } from "front/components";
 import "./index.css";
@@ -10,7 +10,12 @@ const LoginPage = () => {
   const [usernameInput, setUsernameInput] = useState("");
 
   const onClick = () => {
-    const user = { username: usernameInput };
+    const formattedName = nameFormat(usernameInput);
+    if (!formattedName) {
+      window.alert("Username should contain at least 1 non-space character.");
+      return;
+    }
+    const user = { username: formattedName };
     call.post<User>("/api/login", user).then((r) => {
       if (r.status === "success") {
         router.go(PATH.ROOMS);

@@ -3,7 +3,6 @@ div.LoginPage {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: calc(100vh - 200px);
 }
 
 div.LoginPage > div.flexBox > div.logo {

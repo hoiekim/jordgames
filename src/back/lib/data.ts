@@ -40,7 +40,7 @@ export const getJsonableRooms = (): JsonableRoom[] => {
 
 export class User {
   readonly id = getRandomId();
-  readonly username = "";
+  readonly username: string = "";
 
   constructor(init?: Partial<User>) {
     if (init) Object.assign(this, init);
