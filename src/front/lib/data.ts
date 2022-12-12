@@ -26,6 +26,34 @@ export class BggGame {
 type SimpleValueObject = { value: string };
 type DynamicValueArray = SimpleValueObject | SimpleValueObject[];
 
+interface BggLink {
+  type: keyof BggLinkData;
+  id: string;
+  value: string;
+}
+
+export class BggLinkData {
+  boardgameartist?: string[];
+  boardgamecategory?: string[];
+  boardgamedesigner?: string[];
+  boardgameexpansion?: string[];
+  boardgamefamily?: string[];
+  boardgameimplementation?: string[];
+  boardgameintegration?: string[];
+  boardgamemechanic?: string[];
+  boardgamepublisher?: string[];
+
+  constructor(link: BggLink[]) {
+    link.forEach((e) => {
+      const key = e.type;
+      if (this[key]) this[key]?.push(e.value);
+      else this[key] = [e.value];
+    });
+
+    return this;
+  }
+}
+
 export class BggGameDetail {
   id = "";
   image = "";
@@ -38,6 +66,7 @@ export class BggGameDetail {
   maxplaytime = { value: "" };
   minplaytime = { value: "" };
   statistics = { ratings: { averageweight: { value: "" } } };
+  link: BggLink[] = [];
 
   constructor(init: Partial<BggGameDetail> & { id: string }) {
     if (init) Object.assign(this, init);

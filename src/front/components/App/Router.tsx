@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { CSSProperties, useMemo } from "react";
 import {
   useAppContext,
   LoginPage,
@@ -9,7 +9,7 @@ import {
 } from "front";
 
 const Router = () => {
-  const { router } = useAppContext();
+  const { router, viewSize } = useAppContext();
   const { path, transition } = router;
   const { incomingPath, transitioning, direction } = transition;
 
@@ -27,13 +27,17 @@ const Router = () => {
   const currentPage = useMemo(() => getPage(path), [path]);
   const incomingPage = useMemo(() => getPage(incomingPath), [incomingPath]);
 
+  const style: CSSProperties = { minHeight: viewSize.height };
+
   return (
     <div className={classNames.join(" ")}>
-      <div className="previousPage">
+      <div className="previousPage" style={style}>
         {transitioning && direction === "backward" && incomingPage}
       </div>
-      <div className="currentPage">{currentPage}</div>
-      <div className="nextPage">
+      <div className="currentPage" style={style}>
+        {currentPage}
+      </div>
+      <div className="nextPage" style={style}>
         {transitioning && direction === "forward" && incomingPage}
       </div>
     </div>

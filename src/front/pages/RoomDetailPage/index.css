@@ -1,25 +1,17 @@
-div.RoomDetailPage > h2 {
-  margin: 0;
-  padding: 16px 10px 10px;
-  position: sticky;
-  top: 50px;
-  background-color: #fffe;
-  z-index: 110;
-}
-
-div.RoomDetailPage > h2 > button {
-  position: relative;
-  top: -5px;
-  margin-left: 5px;
-}
-
 div.GameRow {
-  margin: 20px 0;
-  padding: 0 10px;
+  padding: 0 var(--edgeSpace);
+}
+
+div.GameRow:not(:last-child) {
+  margin-bottom: 40px;
 }
 
 div.GameRow > div {
-  margin: 5px 0;
+  margin: 10px 0;
+}
+
+div.GameRow > div.voters {
+  margin: -5px;
 }
 
 div.GameRow > div > button {
@@ -27,8 +19,7 @@ div.GameRow > div > button {
 }
 
 div.Report > div > div.voters > div,
-div.GameRow > div.voters > div,
-div.GameThumbnail > div.voters > div {
+div.GameRow > div.voters > div {
   display: inline-block;
   margin: 5px;
   border: 1px #ccc solid;
@@ -42,7 +33,7 @@ div.Report > div > div.voters > div:not(.flexible) {
 
 div.Report {
   border-bottom: 1px #aaa solid;
-  padding: 10px;
+  padding: var(--edgeSpace);
 }
 
 div.Report:last-child {

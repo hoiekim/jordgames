@@ -16,28 +16,60 @@ html {
 body {
   width: 100%;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #fff;
-  color: #333;
+  background-color: var(--offWhite);
+  color: var(--black);
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
 h2 {
-  padding: 0 10px;
+  margin: 0;
+  padding: 16px var(--edgeSpace) 10px;
+  position: sticky;
+  top: 50px;
+  background-color: var(--translucentOffWhite);
+  z-index: 110;
+}
+
+h2 > button {
+  position: relative;
+  margin-left: 5px;
 }
 
 button {
-  background-color: #eee;
-  color: #333;
-  border: none;
   border-radius: 3px;
-  min-width: 20px;
-  height: 24px;
-  padding: 0 5px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  height: 32px;
+}
+
+button:not(.void) {
+  background-color: var(--darkBlue);
+  color: white;
+  border: 0.5px solid var(--black);
+}
+
+button.void {
+  background-color: var(--offWhite);
+  color: var(--darkBlue);
+  border: 2px solid var(--darkBlue);
+}
+
+button.icon {
+  background-color: inherit;
+  color: var(--darkBlue);
+  border: none;
+  padding: 0;
+  font-weight: normal;
+}
+
+button * {
+  cursor: pointer;
 }
 
 a {
@@ -64,9 +96,9 @@ a:hover {
 input {
   cursor: text;
   background-color: #eee;
-  color: #333;
+  color: var(--black);
   border: none;
-  height: 24px;
+  height: 32px;
   font-size: 16px;
   padding: 0 5px;
   outline: 0;
@@ -79,7 +111,7 @@ input.readonly {
 
 select {
   background-color: #eee;
-  color: #333;
+  color: var(--black);
   border: none;
   height: 24px;
   font-size: 16px;
@@ -93,16 +125,7 @@ div#root {
   max-width: 950px;
   min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   margin: auto;
-  background-color: #fff;
-}
-
-div.Login {
-  padding-top: 100px;
-}
-
-div.Login > div {
-  text-align: center;
-  margin: 10px 0;
+  background-color: var(--offWhite);
 }
 
 div.Router {
@@ -111,9 +134,9 @@ div.Router {
 
 div.Router > div {
   width: min(100vw, 950px);
-  min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-  background-color: #fff;
+  background-color: var(--offWhite);
   padding-top: 50px;
+  padding-bottom: 90px;
 }
 
 div.Router > div.previousPage {
@@ -157,4 +180,20 @@ div.Router.transitioning.backward > div.currentPage {
 div.Router:not(.transitioning.backward) > div.currentPage {
   transition-duration: 0ms;
   left: 0;
+}
+
+div.floatingBox {
+  position: fixed;
+  bottom: 0;
+  height: 62px;
+  padding: 0 var(--edgeSpace);
+  width: 100%;
+  background-color: var(--translucentOffWhite);
+  box-shadow: 0 -20px 20px var(--translucentOffWhite);
+}
+
+div.floatingBox > button {
+  width: 100%;
+  margin: 0;
+  box-shadow: var(--shadow);
 }

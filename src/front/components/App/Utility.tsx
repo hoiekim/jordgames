@@ -4,7 +4,7 @@ import { useAppContext, useSync, PATH } from "front";
 let lastSync = new Date();
 
 const Utility = () => {
-  const { user, router } = useAppContext();
+  const { user, router, setViewSize } = useAppContext();
   const { path, go, transition } = router;
   const { transitioning } = transition;
 
@@ -33,6 +33,15 @@ const Utility = () => {
     window.addEventListener("focus", focusAction);
     return () => window.removeEventListener("focus", focusAction);
   }, [sync]);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setViewSize({ width: window.innerWidth, height: window.innerHeight });
+    });
+    window.addEventListener("orientationchange", () => {
+      setViewSize({ width: window.innerWidth, height: window.innerHeight });
+    });
+  }, []);
 
   return <></>;
 };

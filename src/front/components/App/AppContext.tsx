@@ -16,6 +16,10 @@ const AppContext = ({ initialUser, children }: Props) => {
     "map_bggGameDetails",
     new Map()
   );
+  const [viewSize, setViewSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   const router = useRouter();
 
@@ -29,6 +33,8 @@ const AppContext = ({ initialUser, children }: Props) => {
     setBggCollections,
     bggGameDetails,
     setBggGameDetails,
+    viewSize,
+    setViewSize,
   };
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;

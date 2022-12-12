@@ -5,6 +5,7 @@ div.Header * {
 
 div.Header button {
   text-align: center;
+  color: var(--black);
 }
 
 div.Header button:not(:hover) {
@@ -18,12 +19,13 @@ div.Header > .viewController {
   left: 0;
   width: 100%;
   height: 50px;
-  background-color: #eee;
+  background-color: var(--lightOrange);
   margin: auto;
   padding: 0 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 0.5px solid var(--black);
 }
 
 div.Header > .viewController > .centerBox {
@@ -69,29 +71,25 @@ div.Header > .viewController > div > .hamburger > .fadeCover {
   width: 100vw;
   height: 100vh;
   z-index: 810;
-  background-color: #000;
-  opacity: 0.5;
 }
 
 div.Header > .viewController > div > .hamburger > .menu {
   position: absolute;
-  right: 0;
-  top: 10px;
-  width: 200px;
-  padding: 20px 10px;
-  background-color: #eee;
+  right: 5px;
+  top: 50px;
+  width: 120px;
+  background-color: var(--offWhite);
   border-radius: 5px;
   display: flex;
   align-items: center;
   z-index: 820;
+  box-shadow: var(--shadow);
 }
 
 div.Header > .viewController > div > .hamburger > .menu > button {
   width: 100%;
   height: 30px;
-  border-top: 1px solid #ddd;
-}
-
-div.Header > .viewController > div > .hamburger > .menu > button:last-child {
-  border-bottom: 1px solid #ddd;
+  font-weight: normal;
+  border: none;
+  text-align: left;
 }

@@ -129,7 +129,7 @@ const ConfigureRoomPage = () => {
   });
 
   const gameOptions =
-    bggCollection &&
+    !!bggCollection &&
     Array.from(bggCollection.values())
       .filter(({ objectid }) => !selectedGames.has(objectid))
       .map((e, i) => {
@@ -145,7 +145,9 @@ const ConfigureRoomPage = () => {
           <div className="gameOption" key={i + "_" + name}>
             <GameInfo game={new Game({ name, id })} />
             <div>
-              <button onClick={addGame}>Choose</button>
+              <button className="void" onClick={addGame}>
+                Choose
+              </button>
             </div>
           </div>
         );
@@ -187,7 +189,7 @@ const ConfigureRoomPage = () => {
       </div>
       <div className="selectedGames">{selectedGameThumbnails}</div>
       <div>{gameOptions || ""}</div>
-      <div className="completeButton">
+      <div className="floatingBox">
         <button onClick={createRoom}>Complete</button>
       </div>
     </div>

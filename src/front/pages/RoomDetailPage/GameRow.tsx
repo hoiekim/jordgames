@@ -49,17 +49,19 @@ const GameRow = ({ room_id, game }: Props) => {
     });
   };
 
-  const users = votes.map(({ id, username }, i) => (
+  const voters = votes.map(({ id, username }, i) => (
     <div key={`${id}_${i}`}>{username}</div>
   ));
 
   return (
     <div className="GameRow">
       <GameInfo game={game} />
+      {!!voters.length && <div className="voters">{voters}</div>}
       <div>
-        <button onClick={onClickVote}>Vote</button>
+        <button className="void" onClick={onClickVote}>
+          Vote
+        </button>
       </div>
-      <div className="voters">{users}</div>
     </div>
   );
 };

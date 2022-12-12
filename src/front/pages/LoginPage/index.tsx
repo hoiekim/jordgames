@@ -27,7 +27,7 @@ const LoginPage = () => {
 
   return (
     <div className="LoginPage">
-      <div className="flexBox">
+      <div className="centered">
         <div className="logo">
           <Logo />
         </div>

@@ -1,4 +1,4 @@
-div.GameInfo:not(.vertical) {
+div.GameInfo:not(.vertical) > div.flexBox {
   display: flex;
   align-items: flex-start;
 }
@@ -7,36 +7,62 @@ div.GameInfo.vertical {
   overflow: hidden;
 }
 
-div.GameInfo:not(.vertical) > div {
+div.GameInfo:not(.vertical) > div > div.inlineBlock {
   display: inline-block;
   margin: 0 5px;
 }
 
-div.GameInfo.vertical > div {
+div.GameInfo.vertical > div > div.inlineBlock {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-div.GameInfo:not(.vertical) > div:first-child {
+div.GameInfo:not(.vertical) > div > div.inlineBlock:first-child {
   margin-left: 0;
 }
 
-div.GameInfo:not(.vertical) > div:last-child {
+div.GameInfo:not(.vertical) > div > div.inlineBlock:last-child {
   margin-right: 0;
+  flex: 1;
 }
 
-div.GameInfo:not(.vertical) > div > img {
+div.GameInfo:not(.vertical) > div > div.inlineBlock > img {
   width: 80px;
+}
+
+div.GameInfo:not(.vertical) > div > div.inlineBlock > div.title {
+  border-bottom-width: 4px;
+  border-bottom-style: solid;
+  width: 100%;
 }
 
 div.GameInfo div.title {
   font-weight: bold;
-  margin: 5px 0 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+div.GameInfo div.title * {
+  cursor: pointer;
+}
+
+div.GameInfo div.title > span {
+  display: inline-block;
+  max-width: calc(100% - 30px);
+}
+
+div.GameInfo div.title > div.foldIcon {
+  display: inline-block;
+  position: absolute;
+  right: 5px;
+  bottom: 0px;
+  font-weight: bolder;
 }
 
 div.GameInfo.vertical {
-  margin: 0 10px;
+  margin: 0 var(--edgeSpace);
 }
 
 div.GameInfo.vertical:first-child {
@@ -50,4 +76,19 @@ div.GameInfo.vertical:last-child {
 div.GameInfo div.line {
   margin: 5px 0;
   font-size: 12px;
+}
+
+div.GameInfo:not(.vertical) > div.detail {
+  border: 1px solid var(--black);
+  border-radius: 3px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+div.GameInfo:not(.vertical) > div.detail > div:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+div.GameInfo:not(.vertical) > div.detail > div > div.title {
+  margin-bottom: 5px;
 }

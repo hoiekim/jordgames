@@ -1,18 +1,3 @@
-div.ConfigureRoomPage > h2 {
-  margin: 0;
-  padding: 16px 10px 10px;
-  position: sticky;
-  top: 50px;
-  background-color: #fffe;
-  z-index: 110;
-}
-
-div.ConfigureRoomPage > h2 > button {
-  position: relative;
-  top: -5px;
-  margin-left: 5px;
-}
-
 div.ConfigureRoomPage > div.collectionUsername {
   margin-bottom: 10px;
 }
@@ -20,16 +5,16 @@ div.ConfigureRoomPage > div.collectionUsername {
 div.ConfigureRoomPage > div.roomName {
   margin: 0;
   position: sticky;
-  top: 106px;
-  background-color: #fffe;
+  top: 111px;
+  background-color: var(--translucentOffWhite);
   z-index: 110;
 }
 
 div.ConfigureRoomPage > div.selectedGames {
   margin: 0;
   position: sticky;
-  top: 130px;
-  background-color: #fffe;
+  top: 143px;
+  background-color: var(--translucentOffWhite);
   z-index: 110;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -41,7 +26,7 @@ div.ConfigureRoomPage > div.selectedGames {
 }
 
 div.ConfigureRoomPage > div {
-  padding: 0 10px;
+  padding: 0 var(--edgeSpace);
 }
 
 div.ConfigureRoomPage > div.selectedGames > div {
@@ -55,8 +40,8 @@ div.ConfigureRoomPage > div.selectedGames > div > img {
   height: 100%;
 }
 
-div.ConfigureRoomPage > div > div.gameOption {
-  margin: 20px 0;
+div.ConfigureRoomPage > div > div.gameOption:not(:first-child) {
+  margin-top: 40px;
 }
 
 div.ConfigureRoomPage > div > div.gameOption > div {
@@ -78,5 +63,6 @@ div.ConfigureRoomPage > div.completeButton > button {
   margin: 0 auto;
   height: 40px;
   width: 200px;
-  box-shadow: 0px 10px 20px #888, inset 0px 2px 2px #fff, inset 0px -2px 2px #888;
+  box-shadow: 0px 10px 20px #888, inset 0px 2px 2px var(--offWhite),
+    inset 0px -2px 2px #888;
 }

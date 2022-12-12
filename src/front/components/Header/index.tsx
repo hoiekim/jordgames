@@ -1,6 +1,7 @@
 import { MouseEventHandler, useState } from "react";
 import { useAppContext, call, PATH } from "front";
 import "./index.css";
+import MenuIcon from "../MenuIcon";
 
 const Header = () => {
   const { user, setUser, router } = useAppContext();
@@ -31,13 +32,23 @@ const Header = () => {
       <div className="viewController">
         <div className="centerBox">
           <div className="backButton">
-            <button onClick={onClickBack} disabled={isBackButtonDisabled}>
-              {isBackButtonDisabled ? "" : "←"}
-            </button>
+            {isBackButtonDisabled ? (
+              <>&nbsp;</>
+            ) : (
+              <button
+                className="icon"
+                onClick={onClickBack}
+                disabled={isBackButtonDisabled}
+              >
+                ←
+              </button>
+            )}
           </div>
           <div>{user?.username}</div>
           <div className="hamburger">
-            <button onClick={() => setIsHamburgerOpen((s) => !s)}>≡</button>
+            <button className="icon" onClick={() => setIsHamburgerOpen((s) => !s)}>
+              <MenuIcon />
+            </button>
             {isHamburgerOpen && (
               <>
                 <div className="fadeCover" onClick={() => setIsHamburgerOpen(false)} />

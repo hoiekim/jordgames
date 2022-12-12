@@ -83,13 +83,15 @@ const RoomDetailPage = () => {
     <div className="RoomDetailPage">
       <h2>
         <span>{room.name}</span>
-        <button onClick={seeResult}>{isResultOpen ? "Vote Again" : "See Result"}</button>
       </h2>
       {isResultOpen ? (
         <div className="gameComboRows">{gameComboRows}</div>
       ) : (
         <div className="gameRows">{gameRows}</div>
       )}
+      <div className="floatingBox">
+        <button onClick={seeResult}>{isResultOpen ? "Vote Again" : "See Result"}</button>
+      </div>
     </div>
   );
 };

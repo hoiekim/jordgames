@@ -1,14 +1,32 @@
-div.RoomsTable > div > button.addButton {
-  margin-left: 10px;
-}
-
 div.RoomRow {
-  padding: 0 10px;
-  margin: 10px 0;
+  border: solid 0.5px var(--black);
+  border-radius: 4px;
+  height: 110px;
+  padding: var(--edgeSpace);
+  margin: 16px;
   display: flex;
   justify-content: space-between;
 }
 
+div.RoomRow > div.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
 div.RoomRow > div.buttons > button {
   margin: 0 5px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+div.RoomRow > div.roomInfo > div.title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+div.RoomRow > div.roomInfo > div.info {
+  font-size: 12px;
 }

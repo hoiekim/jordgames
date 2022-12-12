@@ -3,6 +3,7 @@ import Utility from "./Utility";
 import Router from "./Router";
 import { Header } from "front/components";
 import AppContext from "./AppContext";
+import "./variables.css";
 import "./index.css";
 
 interface Props {
