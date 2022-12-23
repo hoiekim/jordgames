@@ -36,7 +36,7 @@ div.Header > .viewController > .centerBox {
 
 div.Header > .viewController > .centerBox {
   margin: 0 auto;
-  max-width: 950px;
+  max-width: var(--maxWidth);
   width: 100%;
 }
 

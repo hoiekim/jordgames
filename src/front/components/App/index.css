@@ -122,7 +122,7 @@ code {
 }
 
 div#root {
-  max-width: 950px;
+  max-width: var(--maxWidth);
   min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   margin: auto;
   background-color: var(--offWhite);
@@ -133,7 +133,7 @@ div.Router {
 }
 
 div.Router > div {
-  width: min(100vw, 950px);
+  width: min(100vw, var(--maxWidth));
   background-color: var(--offWhite);
   padding-top: 50px;
   padding-bottom: 90px;
@@ -187,7 +187,7 @@ div.floatingBox {
   bottom: 0;
   height: 62px;
   padding: 0 var(--edgeSpace);
-  width: 100%;
+  width: min(100%, var(--maxWidth));
   background-color: var(--translucentOffWhite);
   box-shadow: 0 -20px 20px var(--translucentOffWhite);
 }

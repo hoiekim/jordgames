@@ -11,7 +11,10 @@ interface Props {
 const AppContext = ({ initialUser, children }: Props) => {
   const [rooms, setRooms] = useState<Rooms>(new Map());
   const [user, setUser] = useState<User | undefined>(initialUser);
-  const [bggCollections, setBggCollections] = useState<BggCollections>(new Map());
+  const [bggCollections, setBggCollections] = useLocalStorage<BggCollections>(
+    "map_bggCollections",
+    new Map()
+  );
   const [bggGameDetails, setBggGameDetails] = useLocalStorage<BggGameDetails>(
     "map_bggGameDetails",
     new Map()

@@ -6,6 +6,7 @@ import { GameInfo } from "front/components";
 import "./index.css";
 
 const DEFUALT_COLLECTION = "jordgames";
+let apiCallThrottling = false;
 
 const ConfigureRoomPage = () => {
   const { router, rooms, setRooms, bggCollections, setBggCollections, bggGameDetails } =
@@ -56,21 +57,32 @@ const ConfigureRoomPage = () => {
   }, [id, bggGameDetails, room]);
 
   useEffect(() => {
-    if (path !== PATH.CONFIGURE_ROOM || bggCollection) return;
+    if (path !== PATH.CONFIGURE_ROOM || apiCallThrottling) return;
 
-    type CollectionResponse = { items: { item: BggGame[] } };
+    apiCallThrottling = true;
+
+    type Items = { item: BggGame[] };
+    type CollectionResponse = { items?: Items; message?: string };
     const paramString = new URLSearchParams({
       username: collectionUsername,
     }).toString();
 
-    call.bgg.get<CollectionResponse>("/collection?" + paramString).then((r) => {
-      setBggCollections((oldValue) => {
-        const newValue = new Map(oldValue);
-        newValue.set(collectionUsername, r.items.item);
-        return newValue;
+    call.bgg
+      .get<CollectionResponse>("/collection?" + paramString)
+      .then((r) => {
+        if (!r.items) return;
+        setBggCollections((oldValue) => {
+          const newValue = new Map(oldValue);
+          const items = r.items as Items;
+          newValue.set(collectionUsername, items.item);
+          return newValue;
+        });
+      })
+      .catch(console.error)
+      .finally(() => {
+        apiCallThrottling = false;
       });
-    });
-  }, [path, collectionUsername, bggCollection, setBggCollections]);
+  }, [path, collectionUsername, setBggCollections]);
 
   const selectedGamesArray = Array.from(selectedGames.values());
 

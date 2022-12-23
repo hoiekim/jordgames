@@ -74,6 +74,7 @@ export const useRouter = (): ClientRouter => {
       isAnimationEnabled.current = false;
     };
 
+    // 950 is maximum width and supposed to be associated with css variable `var(--maxWidth)`
     if (window.innerWidth < 950 && isAnimationEnabled.current) {
       clearTimeout(timeout.current);
       timeout.current = setTimeout(endTransition, DEFAULT_TRANSITION_DURATION);
