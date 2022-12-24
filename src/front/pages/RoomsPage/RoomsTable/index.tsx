@@ -15,7 +15,7 @@ const RoomsTable = () => {
 
   return (
     <div className="RoomsTable">
-      <div>{roomRows}</div>
+      <div>{roomRows.length ? roomRows : "There's no room yet!"}</div>
       <div className="floatingBox">
         <button className="addButton" onClick={onClickAdd}>
           Create New
