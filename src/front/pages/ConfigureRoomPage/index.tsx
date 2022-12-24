@@ -22,8 +22,11 @@ const ConfigureRoomPage = () => {
 
   const room = rooms.get(id);
 
-  const [nameInput, setNameInput] = useState(room?.name || "");
-  const [minPlayersInput, setMinPlayersInput] = useState(room?.min_players || 0);
+  const { name, min_players, number_of_games } = room || new Room();
+
+  const [nameInput, setNameInput] = useState(name);
+  const [minPlayersInput, setMinPlayersInput] = useState(min_players);
+  const [numberOfGamesInput, setNumberOfGamesInput] = useState(number_of_games);
   const [showAdvancedConfig, setShowAdvancedConfig] = useState(false);
   const [collectionUsernameInput, setCollectionUsernameInput] = useLocalStorage(
     "collectionUsernameInput",
@@ -100,26 +103,33 @@ const ConfigureRoomPage = () => {
     );
 
     const min_players = minPlayersInput;
+    const number_of_games = numberOfGamesInput;
 
-    let newRoom: Room | undefined;
+    let idFetchedIfNotExists = id;
 
-    if (id) {
-      newRoom = new Room({ id, name: nameInput, games, min_players });
-    } else {
+    if (!idFetchedIfNotExists) {
       await call.get<NewRoomGetResponse>("/api/new-room").then(({ status, data }) => {
         if (status === "success" && data) {
-          newRoom = new Room({ id: data.id, name: nameInput, games, min_players });
+          idFetchedIfNotExists = data.id;
         }
       });
     }
 
-    if (!newRoom) return;
+    if (!idFetchedIfNotExists) return;
+
+    const newRoom = new Room({
+      id: idFetchedIfNotExists,
+      name: nameInput,
+      games,
+      min_players,
+      number_of_games,
+    });
 
     call.post("/api/room", newRoom).then((r) => {
       if (r.status === "success") {
         setRooms((oldRooms) => {
           const newRooms = new Map(oldRooms);
-          if (newRoom) newRooms.set(newRoom.id, newRoom);
+          newRooms.set(newRoom.id, newRoom);
           return newRooms;
         });
         router.go(PATH.ROOMS);
@@ -198,12 +208,19 @@ const ConfigureRoomPage = () => {
           ></input>
         </div>
       )}
-      <div className="roomName inputBox">
-        <span>Room Name:&nbsp;</span>
+      <div className="inputBox roomName">
+        <span>Room Name:</span>
         <input value={nameInput} onChange={(e) => setNameInput(e.target.value)}></input>
       </div>
-      <div className="minPlayers inputBox">
-        <span>Minimum Players:&nbsp;</span>
+      <div className="inputBox numberOfStuff">
+        <span># of Games:</span>
+        <input
+          type="number"
+          value={numberOfGamesInput.toString()}
+          onChange={(e) => setNumberOfGamesInput(+e.target.value)}
+          disabled
+        ></input>
+        <span>&nbsp;≥ players / game:</span>
         <input
           type="number"
           value={minPlayersInput.toString()}

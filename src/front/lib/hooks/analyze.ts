@@ -1,7 +1,18 @@
 import { Game, Room } from "back/lib";
 import { useAppContext } from "./context";
 
-export const useCombos = (room: Room | null | undefined): Game[][] => {
+/**
+ * Given a room, get combos that contains "n" number of games. Combos should
+ * only contain games that are voted by at least the minimum number of players
+ * determined by the room configuration and required to play that game. All
+ * voters should be able to find at least one game that they voted in every
+ * combo. The total number of voters should fit in the range of minimum and
+ * maximum players of all games in the combo.
+ * @param room Room class object
+ * @param n number of games in a combo
+ * @returns
+ */
+export const useCombos = (room: Room | null | undefined, n = 2): Game[][] => {
   const { bggGameDetails } = useAppContext();
   if (!room) return [];
 
@@ -17,35 +28,53 @@ export const useCombos = (room: Room | null | undefined): Game[][] => {
     return votes.length >= minPlayers;
   });
 
-  const gamesSortedByVotes = gamesVotedMoreThanMinPlayers.sort((a, b) => {
-    return b.votes.length - a.votes.length;
+  const combos = getSubsets(gamesVotedMoreThanMinPlayers, n);
+
+  const combosSortedByNumberOfVoters = combos.sort((a, b) => {
+    const sumOfVotersInA = a.reduce((acc, { votes }) => acc + votes.length, 0);
+    const sumOfVotersInB = b.reduce((acc, { votes }) => acc + votes.length, 0);
+    return sumOfVotersInB - sumOfVotersInA;
   });
 
-  const combos: Game[][] = [];
+  return combosSortedByNumberOfVoters.filter((combo) => {
+    let anyNonPlayer = false;
+    users.forEach((user) => {
+      const allVotes = combo.flatMap(({ votes }) => votes);
+      const found = allVotes.find((voter) => voter.id === user.id);
+      if (!found) anyNonPlayer = true;
+    });
+    if (anyNonPlayer) return false;
 
-  for (let i = 0; i < gamesSortedByVotes.length; i++) {
-    for (let j = i + 1; j < gamesSortedByVotes.length; j++) {
-      const gameA = gamesSortedByVotes[i];
-      const gameB = gamesSortedByVotes[j];
-      let anyNonPlayer = false;
-      users.forEach((user) => {
-        const allVotes = [...gameA.votes, ...gameB.votes];
-        const found = allVotes.find((voter) => voter.id === user.id);
-        if (!found) anyNonPlayer = true;
-      });
-      if (anyNonPlayer) continue;
-      const gameDetailA = bggGameDetails.get(gameA.id);
-      const gameDetailB = bggGameDetails.get(gameB.id);
-      if (!gameDetailA || !gameDetailB) continue;
-      const minPlayersA = +gameDetailA.minplayers.value;
-      const maxPlayersA = +gameDetailA.maxplayers.value;
-      const minPlayersB = +gameDetailB.minplayers.value;
-      const maxPlayersB = +gameDetailB.maxplayers.value;
-      if (users.size < minPlayersA + minPlayersB) continue;
-      if (users.size > maxPlayersA + maxPlayersB) continue;
-      combos.push([gameA, gameB]);
-    }
-  }
+    const details = combo.map(({ id }) => bggGameDetails.get(id));
+    const [sumOfMin, sumOfMax] = details.reduce(
+      (acc, detail) => {
+        const [subSumOfMin, subSumOfMax] = acc;
+        if (!detail) return acc;
+        const min = +detail.minplayers.value;
+        const max = +detail.maxplayers.value;
+        return [subSumOfMin + min, subSumOfMax + max];
+      },
+      [0, 0]
+    );
+    if (users.size < sumOfMin || users.size > sumOfMax) return false;
+    return true;
+  });
+};
 
-  return combos;
+export const getSubsets = <T>(array: T[], n: number) => {
+  const result: T[][] = [];
+
+  const pushSubsets = (array: T[], n: number, partial: T[] = []) => {
+    array.forEach((e, i) => {
+      if (n > 1) {
+        const clone = array.slice();
+        clone.splice(0, i + 1);
+        pushSubsets(clone, n - 1, partial.concat([e]));
+      } else result.push(partial.concat([e]));
+    });
+  };
+
+  pushSubsets(array, n);
+
+  return result;
 };

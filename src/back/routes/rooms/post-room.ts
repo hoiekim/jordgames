@@ -8,7 +8,7 @@ export const postRoomRoute = new Route("POST", "/room", async (req) => {
     };
   }
 
-  const { id, name, games, min_players } = req.body;
+  const { id, name, games, min_players, number_of_games } = req.body;
 
   const formattedName = nameFormat(name);
   if (!formattedName) {
@@ -38,6 +38,7 @@ export const postRoomRoute = new Route("POST", "/room", async (req) => {
     room.name = formattedName;
     room.games = games;
     room.min_players = min_players;
+    room.number_of_games = number_of_games;
     return { status: "success" };
   } catch (error: any) {
     console.error(`Failed to update a room: ${id}`);

@@ -13,9 +13,16 @@ div.ConfigureRoomPage > div.inputBox {
   padding-bottom: 5px;
 }
 
-div.ConfigureRoomPage > div.inputBox > input {
-  margin-left: 10px;
-  flex: 1;
+div.ConfigureRoomPage > div.inputBox * {
+  font-size: 13px;
+}
+
+div.ConfigureRoomPage > div.inputBox > div:first-child {
+  padding-right: 5px;
+}
+
+div.ConfigureRoomPage > div.inputBox > div:last-child {
+  padding-left: 5px;
 }
 
 div.ConfigureRoomPage > div.roomName {
@@ -24,14 +31,33 @@ div.ConfigureRoomPage > div.roomName {
 
 div.ConfigureRoomPage > div.roomName > input {
   min-width: 100px;
+  flex: 1;
+  margin-left: 5px;
 }
 
-div.ConfigureRoomPage > div.minPlayers {
+div.ConfigureRoomPage > div.numberOfStuff {
   top: 153px;
 }
 
-div.ConfigureRoomPage > div.minPlayers > input {
-  min-width: 50px;
+div.ConfigureRoomPage > div.numberOfStuff > * {
+  margin: 0 5px;
+  flex: 1;
+}
+
+div.ConfigureRoomPage > div.numberOfStuff > *:first-child {
+  margin-left: 0;
+}
+
+div.ConfigureRoomPage > div.numberOfStuff > *:last-child {
+  margin-right: 0;
+}
+
+div.ConfigureRoomPage > div.numberOfStuff > span {
+  white-space: nowrap;
+}
+
+div.ConfigureRoomPage > div.numberOfStuff > input {
+  width: 50px;
 }
 
 div.ConfigureRoomPage > div.selectedGames {
