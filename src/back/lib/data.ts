@@ -17,6 +17,7 @@ export class Room {
   readonly id = getRandomId();
   name = "";
   games: Game[] = [];
+  min_players = 0;
   subscribers: Map<string, Subscriber> = new Map();
   readonly created: Date;
 

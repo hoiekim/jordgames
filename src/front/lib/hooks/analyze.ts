@@ -5,14 +5,16 @@ export const useCombos = (room: Room | null | undefined): Game[][] => {
   const { bggGameDetails } = useAppContext();
   if (!room) return [];
 
-  const { games } = room;
+  const { games, min_players: minPlayersForRoom } = room;
 
   const users = new Map(
     games.flatMap(({ votes }) => votes).map((user) => [user.id, user])
   );
 
   const gamesVotedMoreThanMinPlayers = games.filter(({ id, votes }) => {
-    return votes.length >= +(bggGameDetails.get(id)?.minplayers?.value || 0);
+    const minPlayersForGame = +(bggGameDetails.get(id)?.minplayers?.value || 0);
+    const minPlayers = Math.max(minPlayersForRoom, minPlayersForGame);
+    return votes.length >= minPlayers;
   });
 
   const gamesSortedByVotes = gamesVotedMoreThanMinPlayers.sort((a, b) => {

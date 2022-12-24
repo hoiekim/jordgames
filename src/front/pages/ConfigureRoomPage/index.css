@@ -2,18 +2,42 @@ div.ConfigureRoomPage > div.collectionUsername {
   margin-bottom: 10px;
 }
 
-div.ConfigureRoomPage > div.roomName {
+div.ConfigureRoomPage > div.inputBox {
   margin: 0;
   position: sticky;
-  top: 111px;
   background-color: var(--translucentOffWhite);
   z-index: 110;
+  display: flex;
+  align-items: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+div.ConfigureRoomPage > div.inputBox > input {
+  margin-left: 10px;
+  flex: 1;
+}
+
+div.ConfigureRoomPage > div.roomName {
+  top: 111px;
+}
+
+div.ConfigureRoomPage > div.roomName > input {
+  min-width: 100px;
+}
+
+div.ConfigureRoomPage > div.minPlayers {
+  top: 153px;
+}
+
+div.ConfigureRoomPage > div.minPlayers > input {
+  min-width: 50px;
 }
 
 div.ConfigureRoomPage > div.selectedGames {
   margin: 0;
   position: sticky;
-  top: 143px;
+  top: 190px;
   background-color: var(--translucentOffWhite);
   z-index: 110;
   padding-top: 10px;

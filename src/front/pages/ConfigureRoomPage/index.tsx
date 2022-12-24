@@ -23,6 +23,7 @@ const ConfigureRoomPage = () => {
   const room = rooms.get(id);
 
   const [nameInput, setNameInput] = useState(room?.name || "");
+  const [minPlayersInput, setMinPlayersInput] = useState(room?.min_players || 0);
   const [showAdvancedConfig, setShowAdvancedConfig] = useState(false);
   const [collectionUsernameInput, setCollectionUsernameInput] = useLocalStorage(
     "collectionUsernameInput",
@@ -91,21 +92,23 @@ const ConfigureRoomPage = () => {
 
     if (!nameInput) alerts.push("set the name of the room");
     const { size } = selectedGames;
-    if (size < 3 || 100 < size) alerts.push("choose more than 3 & less than 100 games");
+    if (size < 3 || 100 < size) alerts.push("choose more than 2 & less than 100 games");
     if (alerts.length) return window.alert("Please " + alerts.join(" and ") + ".");
 
     const games = selectedGamesArray.map(
       ({ objectid: id, name }) => new Game({ id, name })
     );
 
+    const min_players = minPlayersInput;
+
     let newRoom: Room | undefined;
 
     if (id) {
-      newRoom = new Room({ id, name: nameInput, games });
+      newRoom = new Room({ id, name: nameInput, games, min_players });
     } else {
       await call.get<NewRoomGetResponse>("/api/new-room").then(({ status, data }) => {
         if (status === "success" && data) {
-          newRoom = new Room({ id: data.id, name: nameInput, games });
+          newRoom = new Room({ id: data.id, name: nameInput, games, min_players });
         }
       });
     }
@@ -195,9 +198,17 @@ const ConfigureRoomPage = () => {
           ></input>
         </div>
       )}
-      <div className="roomName">
+      <div className="roomName inputBox">
         <span>Room Name:&nbsp;</span>
         <input value={nameInput} onChange={(e) => setNameInput(e.target.value)}></input>
+      </div>
+      <div className="minPlayers inputBox">
+        <span>Minimum Players:&nbsp;</span>
+        <input
+          type="number"
+          value={minPlayersInput.toString()}
+          onChange={(e) => setMinPlayersInput(+e.target.value)}
+        ></input>
       </div>
       <div className="selectedGames">{selectedGameThumbnails}</div>
       <div>{gameOptions || ""}</div>
