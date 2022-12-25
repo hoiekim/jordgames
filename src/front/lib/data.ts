@@ -1,3 +1,5 @@
+import { Game, User } from "back/lib";
+
 export class BggGame {
   objectid = "";
   objecttype = "";
@@ -70,5 +72,14 @@ export class BggGameDetail {
 
   constructor(init: Partial<BggGameDetail> & { id: string }) {
     if (init) Object.assign(this, init);
+  }
+}
+
+export class Player extends User {
+  flexible: boolean;
+  votedGames: Game[] = [];
+  constructor(user: User, flexible: boolean) {
+    super(user);
+    this.flexible = flexible;
   }
 }

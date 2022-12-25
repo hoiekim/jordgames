@@ -4,5 +4,7 @@ export { default as RoomsPage } from "./RoomsPage";
 export * from "./RoomsPage";
 export { default as RoomDetailPage } from "./RoomDetailPage";
 export * from "./RoomDetailPage";
+export { default as VoteResultPage } from "./VoteResultPage";
+export * from "./VoteResultPage";
 export { default as ConfigureRoomPage } from "./ConfigureRoomPage";
 export * from "./ConfigureRoomPage";

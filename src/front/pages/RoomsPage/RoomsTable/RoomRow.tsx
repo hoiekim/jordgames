@@ -1,20 +1,10 @@
-import { CSSProperties } from "react";
 import { Room } from "back/lib";
-import { getColor, PATH, useAppContext } from "front";
-import { EditIcon } from "front/components";
+import { PATH, useAppContext } from "front";
+import { EditIcon, ImageCircle, PlayersIcon } from "front/components";
 
 interface Props {
   room: Room;
 }
-
-const getStyle = (colorCode: number): CSSProperties => {
-  const lightColorVar = `var(--${getColor(colorCode, 2)})`;
-  const regularColorVar = `var(--${getColor(colorCode, 1)})`;
-  return {
-    backgroundColor: lightColorVar,
-    boxShadow: `inset 5px 5px ${regularColorVar}, inset -5px -5px ${regularColorVar}`,
-  };
-};
 
 const RoomRow = ({ room }: Props) => {
   const { router } = useAppContext();
@@ -32,26 +22,29 @@ const RoomRow = ({ room }: Props) => {
     router.go(PATH.ROOM, { params });
   };
 
-  const colorCode = parseInt(id, 16) % 4;
+  const gameCircles = games.map(({ id, thumbnail }) => (
+    <ImageCircle key={id} radius={30} url={thumbnail} />
+  ));
 
   return (
-    <div className="RoomRow" style={getStyle(colorCode)}>
+    <div className="RoomRow">
       <div className="roomInfo">
         <div className="title">{name || "Unnamed"}</div>
         <div className="info">
-          <span>{games.length} games</span>
-          {!!voters.size && <span>&nbsp;/ {voters.size} voters</span>}
+          <PlayersIcon />
+          <span>{voters.size} votes</span>
         </div>
+        <div className="games">{gameCircles}</div>
       </div>
-      <div className="buttons">
-        <div>
-          <button className="icon" onClick={onClickEdit}>
-            <EditIcon />
-          </button>
-        </div>
-        <div>
-          <button onClick={onClickEnter}>Enter</button>
-        </div>
+      <div className="joinButtonBox">
+        <button className="blue" onClick={onClickEnter}>
+          Join
+        </button>
+      </div>
+      <div className="editButtonBox">
+        <button className="icon" onClick={onClickEdit}>
+          <EditIcon />
+        </button>
       </div>
     </div>
   );

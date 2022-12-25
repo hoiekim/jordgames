@@ -41,7 +41,9 @@ const LoginPage = () => {
             ></input>
           </div>
           <div>
-            <button onClick={onClick}>Enter</button>
+            <button className="blue" onClick={onClick}>
+              Enter
+            </button>
           </div>
         </div>
       </div>

@@ -1,50 +1,51 @@
-div.GameInfo:not(.vertical) > div.flexBox {
+div.GameInfo {
+  overflow: hidden;
+}
+
+div.GameInfo {
+  box-shadow: var(--cardBlueShadow);
+  border-radius: 20px;
+  padding: 18px;
+}
+
+div.GameInfo > div.flexBox {
   display: flex;
   align-items: flex-start;
 }
 
-div.GameInfo.vertical {
-  overflow: hidden;
-}
-
-div.GameInfo:not(.vertical) > div > div.inlineBlock {
+div.GameInfo > div > div.inlineBlock {
   display: inline-block;
-  margin: 0 5px;
+  margin: 0 10px;
 }
 
-div.GameInfo.vertical > div > div.inlineBlock {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-div.GameInfo:not(.vertical) > div > div.inlineBlock:first-child {
+div.GameInfo > div > div.inlineBlock:first-child {
   margin-left: 0;
 }
 
-div.GameInfo:not(.vertical) > div > div.inlineBlock:last-child {
+div.GameInfo > div > div.inlineBlock:last-child {
   margin-right: 0;
   flex: 1;
 }
 
-div.GameInfo:not(.vertical) > div > div.inlineBlock > img {
+div.GameInfo > div > div.inlineBlock > img {
   width: 80px;
 }
 
-div.GameInfo:not(.vertical) > div > div.inlineBlock > div.title {
-  border-bottom-width: 4px;
-  border-bottom-style: solid;
+div.GameInfo > div > div.inlineBlock > div.title {
   width: 100%;
 }
 
 div.GameInfo div.title {
   font-weight: bold;
+  font-size: 13px;
   margin-bottom: 10px;
   cursor: pointer;
   position: relative;
 }
 
 div.GameInfo div.title * {
+  font-weight: bold;
+  font-size: 13px;
   cursor: pointer;
 }
 
@@ -56,39 +57,55 @@ div.GameInfo div.title > span {
 div.GameInfo div.title > div.foldIcon {
   display: inline-block;
   position: absolute;
-  right: 5px;
-  bottom: 0px;
-  font-weight: bolder;
-}
-
-div.GameInfo.vertical {
-  margin: 0 var(--edgeSpace);
-}
-
-div.GameInfo.vertical:first-child {
-  margin-left: 0;
-}
-
-div.GameInfo.vertical:last-child {
-  margin-right: 0;
+  right: 0px;
+  top: -2px;
 }
 
 div.GameInfo div.line {
   margin: 5px 0;
   font-size: 12px;
+  display: flex;
 }
 
-div.GameInfo:not(.vertical) > div.detail {
-  border: 1px solid var(--black);
-  border-radius: 3px;
-  padding: 10px;
-  margin: 10px 0;
+div.GameInfo div.line > div {
+  flex: auto;
+  min-width: 80px;
+  white-space: nowrap;
 }
 
-div.GameInfo:not(.vertical) > div.detail > div:not(:last-child) {
+div.GameInfo div.line > div > * {
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+div.GameInfo > div.detail {
+  margin: 5px 0 10px;
+  font-size: 12px;
+}
+
+div.GameInfo > div.detail > div:not(:last-child) {
   margin-bottom: 10px;
 }
 
-div.GameInfo:not(.vertical) > div.detail > div > div.title {
+div.GameInfo > div.detail > div > div.title {
   margin-bottom: 5px;
+}
+
+div.GameInfo > div.voters {
+  margin: 5px -5px;
+}
+
+div.GameInfo > div.voters > div {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  height: 23px;
+  border-radius: 10px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+div.GameInfo > div > div.voters > div:not(.flexible) {
+  background-color: #ccc;
 }

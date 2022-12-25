@@ -13,11 +13,26 @@ const RoomsTable = () => {
     router.go(PATH.CONFIGURE_ROOM);
   };
 
+  if (rooms.size) {
+    return (
+      <div className="RoomsTable">
+        <div>{roomRows}</div>
+        <div className="floatingBox">
+          <button className="addButton green big shadow" onClick={onClickAdd}>
+            Create New
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="RoomsTable">
-      <div>{roomRows.length ? roomRows : "There's no room yet!"}</div>
-      <div className="floatingBox">
-        <button className="addButton" onClick={onClickAdd}>
+      <div className="placeholder">
+        There aren't any rooms right now: how about creating one?
+      </div>
+      <div className="inPageButtonBox">
+        <button className="addButton green big shadow" onClick={onClickAdd}>
           Create New
         </button>
       </div>

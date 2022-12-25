@@ -1,41 +1,42 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { RoomStreamGetResponse } from "back/routes";
 import { Room, Subscriber } from "back/lib";
-import { call, read, PATH, useAppContext, useCombos } from "front";
+import { call, read, PATH, useAppContext } from "front";
 import GameRow from "./GameRow";
-import Report from "./Report";
 import "./index.css";
+
+const { ROOM, VOTE_RESULT } = PATH;
 
 const RoomDetailPage = () => {
   const { rooms, setRooms, router } = useAppContext();
   const { path, transition, params } = router;
   const { incomingPath, incomingParams } = transition;
-  const [isResultOpen, setIsResultOpen] = useState(false);
 
   const init = useRef(false);
 
   const id =
-    (path === PATH.ROOM
+    (path === ROOM
       ? params.get("id")
-      : incomingPath === PATH.ROOM
+      : incomingPath === ROOM
       ? incomingParams.get("id")
       : "") || "";
 
   const room = rooms.get(id);
-  const gameCombos = useCombos(room);
-
-  useEffect(() => () => setIsResultOpen(false), []);
 
   useEffect(() => {
-    if (path === PATH.ROOM && !init.current && id) {
+    if (path === ROOM && !init.current && id) {
       init.current = true;
       const paramString = new URLSearchParams({ id }).toString();
       const streamingPath = "/api/room-stream?" + paramString;
       read<RoomStreamGetResponse>(
         streamingPath,
         ({ data }) => {
-          const isInThisPage = window.location.pathname === "/" + PATH.ROOM;
-          if (!data || !isInThisPage) return;
+          if (!data) return;
+          const { pathname } = window.location;
+          const isInThisPage = pathname === "/" + ROOM || pathname === "/" + VOTE_RESULT;
+          if (!isInThisPage) return;
+          const urlRoomId = new URLSearchParams(window.location.search).get("id");
+          if (urlRoomId !== id) return;
           const { token, room: newRoom } = data;
           if (token) {
             const paramObj = { token, id: params.get("id") || "" };
@@ -73,24 +74,18 @@ const RoomDetailPage = () => {
     <GameRow key={`gameRow_${game.id}`} room_id={id} game={game} />
   ));
 
-  const gameComboRows = gameCombos?.map((combo) => {
-    return <Report key={`${combo[0]?.id}_${combo[1]?.id}`} combo={combo} />;
-  });
-
-  const seeResult = () => setIsResultOpen((s) => !s);
+  const seeResult = () => router.go(PATH.VOTE_RESULT, { params });
 
   return (
     <div className="RoomDetailPage">
       <h2>
-        <span>{room.name}</span>
+        <span>Vote in {room.name}</span>
       </h2>
-      {isResultOpen ? (
-        <div className="gameComboRows">{gameComboRows}</div>
-      ) : (
-        <div className="gameRows">{gameRows}</div>
-      )}
+      <div className="gameRows">{gameRows}</div>
       <div className="floatingBox">
-        <button onClick={seeResult}>{isResultOpen ? "Vote Again" : "See Result"}</button>
+        <button className="green shadow big" onClick={seeResult}>
+          See Result
+        </button>
       </div>
     </div>
   );

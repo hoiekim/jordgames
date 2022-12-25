@@ -21,6 +21,8 @@ div.GameRow > div.buttonHolder > button.voted {
 div.Report {
   border-bottom: 1px #aaa solid;
   padding: var(--edgeSpace);
+  display: flex;
+  margin: -12px;
 }
 
 div.Report:last-child {
@@ -28,9 +30,22 @@ div.Report:last-child {
 }
 
 div.Report > div {
-  display: flex;
+  flex: 1;
 }
 
-div.Report > div > div {
-  flex: 1;
+div.ResultGameCard {
+  box-shadow: var(--cardBlueShadow);
+  border-radius: 20px;
+  padding: 18px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 12px;
+}
+
+div.ResultGameCard > div.title {
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 10px;
 }

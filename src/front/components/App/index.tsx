@@ -14,8 +14,8 @@ const App = ({ initialUser }: Props) => {
   return (
     <AppContext initialUser={initialUser}>
       <Utility />
-      <Header />
       <Router />
+      <Header />
     </AppContext>
   );
 };

@@ -6,6 +6,7 @@ import {
   PATH,
   ConfigureRoomPage,
   RoomDetailPage,
+  VoteResultPage,
 } from "front";
 
 const Router = () => {
@@ -21,13 +22,23 @@ const Router = () => {
     if (path === PATH.ROOMS) return <RoomsPage />;
     if (path === PATH.CONFIGURE_ROOM) return <ConfigureRoomPage />;
     if (path === PATH.ROOM) return <RoomDetailPage />;
+    if (path === PATH.VOTE_RESULT) return <VoteResultPage />;
     return <div>Not Found</div>;
   };
 
   const currentPage = useMemo(() => getPage(path), [path]);
   const incomingPage = useMemo(() => getPage(incomingPath), [incomingPath]);
 
-  const style: CSSProperties = { minHeight: viewSize.height };
+  const safeAreaInsetTop = window
+    .getComputedStyle(document.documentElement)
+    .getPropertyValue("--safeAreaInsetTop");
+  const safeAreaInsetBottom = window
+    .getComputedStyle(document.documentElement)
+    .getPropertyValue("--safeAreaInsetBottom");
+
+  const style: CSSProperties = {
+    minHeight: `calc(${viewSize.height}px - ${safeAreaInsetTop} - ${safeAreaInsetBottom}`,
+  };
 
   return (
     <div className={classNames.join(" ")}>

@@ -6,6 +6,7 @@ export const getRandomId = () =>
 export class Game {
   readonly id = getRandomId();
   readonly name: string = "";
+  readonly thumbnail: string = "";
   votes: User[] = [];
 
   constructor(init?: Partial<Game>) {

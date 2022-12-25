@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { Game, Room } from "back/lib";
 import { NewRoomGetResponse } from "back/routes";
 import { call, PATH, useAppContext, BggGame, useLocalStorage } from "front";
-import { GameInfo } from "front/components";
+import { GameInfo, ImageCircle } from "front/components";
 import "./index.css";
 
-const DEFUALT_COLLECTION = "jordgames";
+const COLLECTION_JORDGAMES = "jordgames";
+const COLLECTION_IMANTIS = "imantis";
+const COLLECTION_OTHER = "_other";
 let apiCallThrottling = false;
 
 const ConfigureRoomPage = () => {
@@ -30,9 +32,9 @@ const ConfigureRoomPage = () => {
   const [showAdvancedConfig, setShowAdvancedConfig] = useState(false);
   const [collectionUsernameInput, setCollectionUsernameInput] = useLocalStorage(
     "collectionUsernameInput",
-    DEFUALT_COLLECTION
+    COLLECTION_JORDGAMES
   );
-  const [collectionUsername, setCollectionUsername] = useState(DEFUALT_COLLECTION);
+  const [collectionUsername, setCollectionUsername] = useState(collectionUsernameInput);
   const [selectedGames, setSelectedGames] = useState<Map<string, BggGame>>(() => {
     if (!room) return new Map();
     return new Map(
@@ -99,7 +101,7 @@ const ConfigureRoomPage = () => {
     if (alerts.length) return window.alert("Please " + alerts.join(" and ") + ".");
 
     const games = selectedGamesArray.map(
-      ({ objectid: id, name }) => new Game({ id, name })
+      ({ objectid: id, name, thumbnail }) => new Game({ id, name, thumbnail })
     );
 
     const min_players = minPlayersInput;
@@ -138,7 +140,7 @@ const ConfigureRoomPage = () => {
   };
 
   const selectedGameThumbnails = selectedGamesArray.map((e) => {
-    const { objectid, name, thumbnail } = e;
+    const { objectid, thumbnail } = e;
     const removeGame = () => {
       setSelectedGames((oldValue) => {
         const newValue = new Map(oldValue);
@@ -148,7 +150,7 @@ const ConfigureRoomPage = () => {
     };
     return (
       <div key={`selectedGame_${objectid}`} onClick={removeGame}>
-        <img src={thumbnail} alt={name} />
+        <ImageCircle radius={30} url={thumbnail} />
       </div>
     );
   });
@@ -158,7 +160,7 @@ const ConfigureRoomPage = () => {
     Array.from(bggCollection.values())
       .filter(({ objectid }) => !selectedGames.has(objectid))
       .map((e, i) => {
-        const { name, objectid: id } = e;
+        const { name, objectid: id, thumbnail } = e;
         const addGame = () => {
           setSelectedGames((oldValue) => {
             const newValue = new Map(oldValue);
@@ -168,10 +170,10 @@ const ConfigureRoomPage = () => {
         };
         return (
           <div className="gameOption" key={i + "_" + name}>
-            <GameInfo game={new Game({ name, id })} />
-            <div>
-              <button className="void" onClick={addGame}>
-                Choose
+            <GameInfo game={new Game({ name, id, thumbnail })} />
+            <div className="buttonHolder">
+              <button className="green shadow big" onClick={addGame}>
+                Add
               </button>
             </div>
           </div>
@@ -182,55 +184,72 @@ const ConfigureRoomPage = () => {
     <div className="ConfigureRoomPage">
       <h2>
         <span>Configure Room</span>
-        <button
-          onClick={() => {
-            if (showAdvancedConfig) {
-              setCollectionUsernameInput(DEFUALT_COLLECTION);
-              setCollectionUsername(DEFUALT_COLLECTION);
-            }
-            window.scrollTo(0, 0);
-            setShowAdvancedConfig(!showAdvancedConfig);
-          }}
-        >
-          {showAdvancedConfig ? "Use Default" : "Use Advanced"}
-        </button>
       </h2>
-      {showAdvancedConfig && (
-        <div className="collectionUsername">
-          <span>Collection:&nbsp;</span>
-          <input
-            value={collectionUsernameInput}
-            onChange={(e) => setCollectionUsernameInput(e.target.value)}
-            onBlur={() => setCollectionUsername(collectionUsernameInput)}
-            onKeyUp={(e) =>
-              e.key === "Enter" && setCollectionUsername(collectionUsernameInput)
-            }
-          ></input>
+      <div className="inputArea">
+        <div className="inputBox grow roomName">
+          <span>Room Name:</span>
+          <input value={nameInput} onChange={(e) => setNameInput(e.target.value)}></input>
         </div>
-      )}
-      <div className="inputBox roomName">
-        <span>Room Name:</span>
-        <input value={nameInput} onChange={(e) => setNameInput(e.target.value)}></input>
+        <div className="inputBox grow collectionUsername">
+          <span>Game List:&nbsp;</span>
+          {showAdvancedConfig ? (
+            <input
+              value={collectionUsernameInput}
+              onChange={(e) => setCollectionUsernameInput(e.target.value)}
+              onBlur={() => setCollectionUsername(collectionUsernameInput)}
+              onKeyUp={(e) =>
+                e.key === "Enter" && setCollectionUsername(collectionUsernameInput)
+              }
+            ></input>
+          ) : (
+            <select
+              value={collectionUsernameInput}
+              onChange={(e) => {
+                const { value } = e.target;
+                if (value === COLLECTION_OTHER) setShowAdvancedConfig(true);
+                else {
+                  setCollectionUsernameInput(value);
+                  setCollectionUsername(value);
+                }
+              }}
+            >
+              <option value={COLLECTION_JORDGAMES}>JordGames</option>
+              <option value={COLLECTION_IMANTIS}>Imantis</option>
+              <option value={COLLECTION_OTHER}>Other...</option>
+            </select>
+          )}
+        </div>
+        <div className="inputBox numberOfStuff">
+          <span># of Games:</span>
+          <select
+            value={numberOfGamesInput.toString()}
+            onChange={(e) => setNumberOfGamesInput(+e.target.value)}
+          >
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+          </select>
+          <span>&nbsp;Players / Game ≥</span>
+          <select
+            value={minPlayersInput.toString()}
+            onChange={(e) => setMinPlayersInput(+e.target.value)}
+          >
+            <option value={0}>0</option>
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+          </select>
+        </div>
+        {!!selectedGameThumbnails.length && (
+          <div className="selectedGames noScrollBar">{selectedGameThumbnails}</div>
+        )}
       </div>
-      <div className="inputBox numberOfStuff">
-        <span># of Games:</span>
-        <input
-          type="number"
-          value={numberOfGamesInput.toString()}
-          onChange={(e) => setNumberOfGamesInput(+e.target.value)}
-          disabled
-        ></input>
-        <span>&nbsp;≥ players / game:</span>
-        <input
-          type="number"
-          value={minPlayersInput.toString()}
-          onChange={(e) => setMinPlayersInput(+e.target.value)}
-        ></input>
-      </div>
-      <div className="selectedGames">{selectedGameThumbnails}</div>
       <div>{gameOptions || ""}</div>
       <div className="floatingBox">
-        <button onClick={createRoom}>Complete</button>
+        <button className="blue shadow big" onClick={createRoom}>
+          Open Room
+        </button>
       </div>
     </div>
   );

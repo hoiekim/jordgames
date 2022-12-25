@@ -2,21 +2,22 @@ import { Game, Room } from "back/lib";
 import { useAppContext } from "./context";
 
 /**
- * Given a room, get combos that contains "n" number of games. Combos should
- * only contain games that are voted by at least the minimum number of players
- * determined by the room configuration and required to play that game. All
- * voters should be able to find at least one game that they voted in every
- * combo. The total number of voters should fit in the range of minimum and
- * maximum players of all games in the combo.
+ * Given a room, get combos that contains "n" number of games, which is
+ * specified by room configuration. Combos should only contain games that are
+ * voted by at least the minimum number of players determined by the room
+ * configuration and required to play that game. All voters should be able to
+ * find at least one game that they voted in every combo. The total number of
+ * voters should fit in the range of minimum and maximum players of all games
+ * in the combo.
  * @param room Room class object
  * @param n number of games in a combo
  * @returns
  */
-export const useCombos = (room: Room | null | undefined, n = 2): Game[][] => {
+export const useCombos = (room: Room | null | undefined): Game[][] => {
   const { bggGameDetails } = useAppContext();
   if (!room) return [];
 
-  const { games, min_players: minPlayersForRoom } = room;
+  const { games, min_players: minPlayersForRoom, number_of_games } = room;
 
   const users = new Map(
     games.flatMap(({ votes }) => votes).map((user) => [user.id, user])
@@ -28,24 +29,21 @@ export const useCombos = (room: Room | null | undefined, n = 2): Game[][] => {
     return votes.length >= minPlayers;
   });
 
-  const combos = getSubsets(gamesVotedMoreThanMinPlayers, n);
+  const combos = getSubsets(gamesVotedMoreThanMinPlayers, number_of_games);
 
-  const combosSortedByNumberOfVoters = combos.sort((a, b) => {
-    const sumOfVotersInA = a.reduce((acc, { votes }) => acc + votes.length, 0);
-    const sumOfVotersInB = b.reduce((acc, { votes }) => acc + votes.length, 0);
-    return sumOfVotersInB - sumOfVotersInA;
-  });
-
-  return combosSortedByNumberOfVoters.filter((combo) => {
+  const combosFitInCriteria = combos.filter((combo) => {
     let anyNonPlayer = false;
+
     users.forEach((user) => {
       const allVotes = combo.flatMap(({ votes }) => votes);
       const found = allVotes.find((voter) => voter.id === user.id);
       if (!found) anyNonPlayer = true;
     });
+
     if (anyNonPlayer) return false;
 
     const details = combo.map(({ id }) => bggGameDetails.get(id));
+
     const [sumOfMin, sumOfMax] = details.reduce(
       (acc, detail) => {
         const [subSumOfMin, subSumOfMax] = acc;
@@ -56,8 +54,15 @@ export const useCombos = (room: Room | null | undefined, n = 2): Game[][] => {
       },
       [0, 0]
     );
+
     if (users.size < sumOfMin || users.size > sumOfMax) return false;
     return true;
+  });
+
+  return combosFitInCriteria.sort((a, b) => {
+    const sumOfVotersInA = a.reduce((acc, { votes }) => acc + votes.length, 0);
+    const sumOfVotersInB = b.reduce((acc, { votes }) => acc + votes.length, 0);
+    return sumOfVotersInB - sumOfVotersInA;
   });
 };
 

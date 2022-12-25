@@ -18,26 +18,34 @@ div.Header > .viewController {
   top: 0;
   left: 0;
   width: 100%;
-  height: 50px;
-  background-color: var(--lightOrange);
+  height: calc(var(--headerHeight) + 35px);
   margin: auto;
-  padding: 0 10px;
+  padding: 0 var(--edgeSpace);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 0.5px solid var(--black);
+}
+
+div.Header > .viewController > div.backgroundImage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 div.Header > .viewController > .centerBox {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-div.Header > .viewController > .centerBox {
+  z-index: 810;
+  width: 100%;
+  height: 50px;
   margin: 0 auto;
   max-width: var(--maxWidth);
-  width: 100%;
+}
+
+div.Header > .viewController > .centerBox > div {
+  font-weight: bold;
 }
 
 div.Header > .viewController > div > div > div {
@@ -70,20 +78,20 @@ div.Header > .viewController > div > .hamburger > .fadeCover {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 810;
+  z-index: 820;
 }
 
 div.Header > .viewController > div > .hamburger > .menu {
   position: absolute;
   right: 5px;
-  top: 50px;
+  top: 40px;
   width: 120px;
-  background-color: var(--offWhite);
-  border-radius: 5px;
+  background-color: var(--white);
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  z-index: 820;
-  box-shadow: var(--shadow);
+  z-index: 830;
+  box-shadow: var(--buttonBlueShadow);
 }
 
 div.Header > .viewController > div > .hamburger > .menu > button {
@@ -91,5 +99,7 @@ div.Header > .viewController > div > .hamburger > .menu > button {
   height: 30px;
   font-weight: normal;
   border: none;
-  text-align: left;
+  text-align: center;
+  color: var(--black);
+  border-radius: 12px;
 }

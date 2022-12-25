@@ -5,6 +5,8 @@ html {
 * {
   box-sizing: border-box;
   cursor: default;
+  font-weight: 400;
+  color: var(--black);
 }
 
 *:not(input) {
@@ -16,23 +18,29 @@ html {
 body {
   width: 100%;
   margin: 0;
-  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "Montserrat", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--offWhite);
+  background-color: var(--white);
   color: var(--black);
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
 h2 {
+  font-size: 20px;
   margin: 0;
-  padding: 16px var(--edgeSpace) 10px;
+  padding: 51px var(--edgeSpace) 10px;
   position: sticky;
-  top: 50px;
-  background-color: var(--translucentOffWhite);
+  top: var(--headerHeight);
+  background-color: var(--translucentWhite);
   z-index: 110;
+}
+
+h2 > span {
+  font-weight: bold;
 }
 
 h2 > button {
@@ -41,28 +49,62 @@ h2 > button {
 }
 
 button {
-  border-radius: 3px;
-  padding: 8px;
-  font-size: 12px;
-  font-weight: bold;
-  height: 32px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-button:not(.void) {
-  background-color: var(--darkBlue);
+button:not(.icon) {
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:not(.big) {
+  height: 24px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+button.big {
+  height: 40px;
+  border-radius: 20px;
+  font-size: 24px;
+  padding: 0 20px;
+}
+
+button.blue:not(.selected) {
+  background-color: var(--buttonBlue);
   color: white;
-  border: 0.5px solid var(--black);
+}
+
+button.blue.selected {
+  background-color: var(--buttonBlueSelected);
+  color: white;
+}
+
+button.blue.shadow {
+  box-shadow: var(--buttonBlueShadow);
+}
+
+button.green {
+  background-color: var(--buttonGreen);
+  color: white;
+}
+
+button.green.shadow {
+  box-shadow: var(--buttonGreenShadow);
 }
 
 button.void {
-  background-color: var(--offWhite);
+  background-color: var(--white);
   color: var(--darkBlue);
   border: 2px solid var(--darkBlue);
 }
 
 button.icon {
   background-color: inherit;
-  color: var(--darkBlue);
+  color: var(--black);
   border: none;
   padding: 0;
   font-weight: normal;
@@ -87,34 +129,23 @@ a {
   cursor: pointer;
 }
 
-button:hover,
-select:hover,
-a:hover {
-  background-color: #ddd;
-}
-
-input {
+input,
+select {
   cursor: text;
-  background-color: #eee;
+  background-color: var(--cardLightBlue);
   color: var(--black);
   border: none;
   height: 32px;
+  border-radius: 16px;
   font-size: 16px;
-  padding: 0 5px;
+  padding: 0 12px;
   outline: 0;
+  box-shadow: var(--inputBlueInsetShadow);
 }
 
 input.readonly {
   background-color: inherit;
   cursor: default;
-}
-
-select {
-  background-color: #eee;
-  color: var(--black);
-  border: none;
-  height: 24px;
-  font-size: 16px;
 }
 
 code {
@@ -125,7 +156,7 @@ div#root {
   max-width: var(--maxWidth);
   min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   margin: auto;
-  background-color: var(--offWhite);
+  background-color: var(--white);
 }
 
 div.Router {
@@ -134,8 +165,8 @@ div.Router {
 
 div.Router > div {
   width: min(100vw, var(--maxWidth));
-  background-color: var(--offWhite);
-  padding-top: 50px;
+  background-color: var(--white);
+  padding-top: var(--headerHeight);
   padding-bottom: 90px;
 }
 
@@ -185,15 +216,20 @@ div.Router:not(.transitioning.backward) > div.currentPage {
 div.floatingBox {
   position: fixed;
   bottom: 0;
-  height: 62px;
+  height: 90px;
   padding: 0 var(--edgeSpace);
   width: min(100%, var(--maxWidth));
-  background-color: var(--translucentOffWhite);
-  box-shadow: 0 -20px 20px var(--translucentOffWhite);
+  background-color: var(--translucentWhite);
+  box-shadow: 0 -20px 20px var(--translucentWhite);
+  display: flex;
+  justify-content: center;
 }
 
-div.floatingBox > button {
-  width: 100%;
-  margin: 0;
-  box-shadow: var(--shadow);
+.noScrollBar::-webkit-scrollbar {
+  display: none;
+}
+
+.noScrollBar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

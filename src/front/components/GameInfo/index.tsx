@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { Game } from "back/lib";
-import { call, BggGameDetail } from "front";
-import { getColor, useAppContext, BggLinkData } from "front/lib";
+import { call, BggGameDetail, getColor, useAppContext, BggLinkData } from "front";
+import { ChevronDownIcon, ImageCircle, PlayersIcon, TimeIcon } from "front/components";
 import "./index.css";
 
 interface Props {
   game: Game;
   vertical?: boolean;
+  showVoters?: boolean;
 }
 
 const fetchJobs = new Map<string, true>();
 
-const GameInfo = ({ game, vertical }: Props) => {
-  const { id } = game;
+const GameInfo = ({ game, vertical, showVoters }: Props) => {
+  const { id, votes } = game;
   const { bggGameDetails, setBggGameDetails } = useAppContext();
   const bggGameDetail = bggGameDetails.get(game.id);
 
@@ -74,16 +75,22 @@ const GameInfo = ({ game, vertical }: Props) => {
       </div>
     );
 
-  const colorCode = 1 + (parseInt(id) % 4);
-  const borderBottomColor = `var(--${getColor(colorCode, 1)})`;
-
   const { boardgamecategory, boardgamemechanic } = new BggLinkData(link);
+
+  const voters = votes.map(({ id, username }, i) => {
+    const backgroundColor = `var(--${getColor(parseInt(id, 16) % 5)})`;
+    return (
+      <div key={`${id}_${i}`} style={{ backgroundColor }}>
+        {username}
+      </div>
+    );
+  });
 
   return (
     <div className="GameInfo">
       <div className="flexBox">
         <div className="inlineBlock">
-          <img src={thumbnail} alt={safeName || game.id} />
+          <ImageCircle url={thumbnail} radius={69} />
         </div>
         <div className="inlineBlock">
           <div
@@ -93,36 +100,34 @@ const GameInfo = ({ game, vertical }: Props) => {
               }
             }}
             className="title"
-            style={{ borderBottomColor }}
           >
             <span>{safeName}</span>
-            <div
-              className="foldIcon"
-              style={{
-                transform: isDetailOpen ? "rotate(-90deg)" : "rotate(90deg)",
-              }}
-            >
-              〉
+            <div className="foldIcon">
+              <ChevronDownIcon />
             </div>
           </div>
           <div className="line">
-            <span>
-              {minplayers.value} - {maxplayers.value} players
-            </span>
-          </div>
-          <div className="line">
-            <span>Complexity:&nbsp;</span>
-            <span>{complexity.toFixed(1)} / 5</span>
-          </div>
-          <div className="line">
-            <span>
-              {minplaytime.value} - {maxplaytime.value} mins
-            </span>
+            <div>
+              <TimeIcon />
+              <span>
+                {minplaytime.value} - {maxplaytime.value} min
+              </span>
+            </div>
+            <div>
+              <PlayersIcon />
+              <span>
+                {minplayers.value} - {maxplayers.value}
+              </span>
+            </div>
           </div>
         </div>
       </div>
       {isDetailOpen && (!!boardgamecategory || !!boardgamemechanic) && (
         <div className="detail">
+          <div>
+            <div className="title">Complexity:&nbsp;</div>
+            <div>{complexity.toFixed(1)} / 5</div>
+          </div>
           {!!boardgamecategory && (
             <div>
               <div className="title">Category</div>
@@ -137,6 +142,7 @@ const GameInfo = ({ game, vertical }: Props) => {
           )}
         </div>
       )}
+      {!!showVoters && !!voters.length && <div className="voters">{voters}</div>}
     </div>
   );
 };

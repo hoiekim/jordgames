@@ -1,32 +1,63 @@
-div.RoomRow {
-  border: solid 0.5px var(--black);
-  border-radius: 4px;
-  height: 110px;
-  padding: var(--edgeSpace);
-  margin: 16px;
-  display: flex;
-  justify-content: space-between;
+div.RoomsTable > div.placeholder {
+  padding: 0 var(--edgeSpace);
+  font-size: 15px;
+  margin: 50px 0;
 }
 
-div.RoomRow > div.buttons {
+div.RoomsTable > div.inPageButtonBox {
+  display: flex;
+  justify-content: center;
+}
+
+div.RoomRow {
+  position: relative;
+  border-radius: 20px;
+  padding: 20px;
+  margin: var(--edgeSpace);
+  box-shadow: var(--cardBlueShadow);
+}
+
+div.RoomRow > div.joinButtonBox > button {
+  width: 100%;
+  box-shadow: none;
+}
+
+div.RoomRow > div.editButtonBox {
+  position: absolute;
+  top: 20px;
+  right: 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
 }
 
-div.RoomRow > div.buttons > button {
+div.RoomRow > div.editButtonBox > button {
   margin: 0 5px;
-  padding: 8px;
   font-size: 12px;
   font-weight: bold;
 }
 
 div.RoomRow > div.roomInfo > div.title {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 18px;
 }
 
 div.RoomRow > div.roomInfo > div.info {
   font-size: 12px;
+  margin-bottom: 18px;
+}
+
+div.RoomRow > div.roomInfo > div.info > svg:first-child {
+  margin-right: 10px;
+}
+
+div.RoomRow > div.roomInfo > div.games {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -3px -3px 11px;
+}
+
+div.RoomRow > div.roomInfo > div.games > div.ImageCircle {
+  margin: 3px;
 }

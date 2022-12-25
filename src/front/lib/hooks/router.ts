@@ -6,6 +6,7 @@ export enum PATH {
   LOGIN = "login",
   ROOMS = "rooms",
   ROOM = "room",
+  VOTE_RESULT = "vote-result",
   CONFIGURE_ROOM = "create-room",
 }
 

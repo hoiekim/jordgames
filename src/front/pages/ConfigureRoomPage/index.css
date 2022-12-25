@@ -1,105 +1,98 @@
-div.ConfigureRoomPage > div.collectionUsername {
-  margin-bottom: 10px;
+div.ConfigureRoomPage > div {
+  padding: 0 var(--edgeSpace);
 }
 
-div.ConfigureRoomPage > div.inputBox {
-  margin: 0;
+div.ConfigureRoomPage > div.inputArea {
+  top: 136px;
   position: sticky;
-  background-color: var(--translucentOffWhite);
+  background-color: var(--translucentWhite);
   z-index: 110;
+}
+
+div.ConfigureRoomPage > div.inputArea > div.inputBox {
   display: flex;
   align-items: center;
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
-div.ConfigureRoomPage > div.inputBox * {
+div.ConfigureRoomPage > div.inputArea > div.inputBox > span {
+  font-weight: bold;
+}
+
+div.ConfigureRoomPage > div.inputArea > div.inputBox * {
   font-size: 13px;
 }
 
-div.ConfigureRoomPage > div.inputBox > div:first-child {
+div.ConfigureRoomPage > div.inputArea > div.inputBox > div:first-child {
   padding-right: 5px;
 }
 
-div.ConfigureRoomPage > div.inputBox > div:last-child {
+div.ConfigureRoomPage > div.inputArea > div.inputBox > div:last-child {
   padding-left: 5px;
 }
 
-div.ConfigureRoomPage > div.roomName {
-  top: 111px;
-}
-
-div.ConfigureRoomPage > div.roomName > input {
+div.ConfigureRoomPage > div.inputArea > div.grow > input,
+div.ConfigureRoomPage > div.inputArea > div.grow > select {
   min-width: 100px;
   flex: 1;
   margin-left: 5px;
 }
 
-div.ConfigureRoomPage > div.numberOfStuff {
-  top: 153px;
-}
-
-div.ConfigureRoomPage > div.numberOfStuff > * {
+div.ConfigureRoomPage > div.inputArea > div.numberOfStuff > * {
   margin: 0 5px;
   flex: 1;
 }
 
-div.ConfigureRoomPage > div.numberOfStuff > *:first-child {
+div.ConfigureRoomPage > div.inputArea > div.numberOfStuff > *:first-child {
   margin-left: 0;
 }
 
-div.ConfigureRoomPage > div.numberOfStuff > *:last-child {
+div.ConfigureRoomPage > div.inputArea > div.numberOfStuff > *:last-child {
   margin-right: 0;
 }
 
-div.ConfigureRoomPage > div.numberOfStuff > span {
+div.ConfigureRoomPage > div.inputArea > div.numberOfStuff > span {
   white-space: nowrap;
 }
 
-div.ConfigureRoomPage > div.numberOfStuff > input {
-  width: 50px;
+div.ConfigureRoomPage > div.inputArea > div.numberOfStuff > select {
+  width: 30px;
 }
 
-div.ConfigureRoomPage > div.selectedGames {
-  margin: 0;
+div.ConfigureRoomPage > div.inputArea > div.selectedGames {
+  margin-left: -2px;
   position: sticky;
-  top: 190px;
-  background-color: var(--translucentOffWhite);
   z-index: 110;
   padding-top: 10px;
   padding-bottom: 10px;
-}
-
-div.ConfigureRoomPage > div.selectedGames {
+  display: flex;
+  align-items: center;
   overflow-x: scroll;
   white-space: nowrap;
 }
 
-div.ConfigureRoomPage > div {
-  padding: 0 var(--edgeSpace);
-}
-
-div.ConfigureRoomPage > div.selectedGames > div {
-  display: inline-block;
+div.ConfigureRoomPage > div.inputArea > div.selectedGames > div {
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
-  margin: 0 3px;
-  height: 50px;
+  margin: 0 2px;
 }
 
-div.ConfigureRoomPage > div.selectedGames > div > img {
-  height: 100%;
+div.ConfigureRoomPage > div.inputArea > div.selectedGames > div * {
+  cursor: pointer;
 }
 
-div.ConfigureRoomPage > div > div.gameOption:not(:first-child) {
-  margin-top: 40px;
+div.ConfigureRoomPage > div > div.gameOption:first-child {
+  margin-top: 15px;
 }
 
-div.ConfigureRoomPage > div > div.gameOption > div {
-  margin: 5px 0;
-}
-
-div.ConfigureRoomPage > div > div.gameOption > div > button {
-  width: 100%;
+div.ConfigureRoomPage > div > div.gameOption > div.buttonHolder {
+  position: relative;
+  top: -20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 div.ConfigureRoomPage > div.completeButton {
@@ -113,6 +106,5 @@ div.ConfigureRoomPage > div.completeButton > button {
   margin: 0 auto;
   height: 40px;
   width: 200px;
-  box-shadow: 0px 10px 20px #888, inset 0px 2px 2px var(--offWhite),
-    inset 0px -2px 2px #888;
+  box-shadow: 0px 10px 20px #888, inset 0px 2px 2px var(--white), inset 0px -2px 2px #888;
 }

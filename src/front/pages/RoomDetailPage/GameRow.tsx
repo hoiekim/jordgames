@@ -9,7 +9,7 @@ interface Props {
 
 const GameRow = ({ room_id, game }: Props) => {
   const { user, setRooms } = useAppContext();
-  const { id, votes } = game;
+  const { id } = game;
 
   const isVoted = game.votes.find((e) => e.id === user?.id);
 
@@ -49,17 +49,15 @@ const GameRow = ({ room_id, game }: Props) => {
     });
   };
 
-  const voters = votes.map(({ id, username }, i) => (
-    <div key={`${id}_${i}`}>{username}</div>
-  ));
+  const classes = ["blue", "shadow", "big"];
+  if (isVoted) classes.push("voted");
 
   return (
     <div className="GameRow">
-      <GameInfo game={game} />
-      {!!voters.length && <div className="voters">{voters}</div>}
-      <div>
-        <button className="void" onClick={onClickVote}>
-          Vote
+      <GameInfo game={game} showVoters={true} />
+      <div className="buttonHolder">
+        <button className={classes.join(" ")} onClick={onClickVote}>
+          {isVoted ? "Voted!" : "Vote"}
         </button>
       </div>
     </div>

@@ -3,11 +3,13 @@
  * For color details, find "variables.css" in this project.
  */
 export const colorMap = [
-  ["darkYellow", "darkRed", "darkPurple", "darkGreen", "darkOrange", "darkBlue"],
-  ["yellow", "red", "purple", "green", "orange", "blue"],
-  ["lightYellow", "lightRed", "lightPurple", "lightGreen", "lightOrange", "lightBlue"],
+  "lightYellow",
+  "lightRed",
+  "lightPurple",
+  "lightGreen",
+  "lightOrange",
 ];
 
-export const getColor = (colorCode: number, brightness: number) => {
-  return colorMap[brightness][colorCode];
+export const getColor = (colorCode: number) => {
+  return colorMap[colorCode];
 };

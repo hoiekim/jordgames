@@ -1,7 +1,7 @@
 import { MouseEventHandler, useState } from "react";
 import { useAppContext, call, PATH } from "front";
+import { MenuIcon, ChevronLeftIcon } from "front/components";
 import "./index.css";
-import MenuIcon from "../MenuIcon";
 
 const Header = () => {
   const { user, setUser, router } = useAppContext();
@@ -22,14 +22,32 @@ const Header = () => {
     back();
   };
 
-  const { LOGIN, ROOMS } = PATH;
+  const { LOGIN, ROOMS, CONFIGURE_ROOM, ROOM } = PATH;
 
   const isBackButtonDisabled =
     !params.toString() && !![LOGIN, ROOMS].find((e) => e === path);
 
+  const backgroundUrl =
+    path === ROOMS
+      ? "all_rooms_header"
+      : path === CONFIGURE_ROOM
+      ? "config_page_header"
+      : path === ROOM
+      ? "vote_page_header"
+      : "results_screen_header";
+
   return (
     <div className="Header" style={{ display: user ? undefined : "none" }}>
       <div className="viewController">
+        <div
+          className="backgroundImage"
+          style={{
+            backgroundImage: "url(/images/" + backgroundUrl + ".png)",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundSize: "681px 85px",
+          }}
+        />
         <div className="centerBox">
           <div className="backButton">
             {isBackButtonDisabled ? (
@@ -40,7 +58,7 @@ const Header = () => {
                 onClick={onClickBack}
                 disabled={isBackButtonDisabled}
               >
-                ←
+                <ChevronLeftIcon />
               </button>
             )}
           </div>

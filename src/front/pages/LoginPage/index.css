@@ -17,6 +17,8 @@ div.LoginPage > div.centered > div.logo {
 
 div.LoginPage > div.centered > h2 {
   text-align: center;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 div.LoginPage > div.centered > div.inputArea {
@@ -26,6 +28,17 @@ div.LoginPage > div.centered > div.inputArea {
 div.LoginPage > div.centered > div.inputArea > div > input,
 div.LoginPage > div.centered > div.inputArea > div > button {
   text-align: center;
-  width: 200px;
-  margin: 5px 0;
+  width: 306px;
+  height: 24px;
+  margin: 10px 0;
+  border-radius: 12px;
+}
+
+div.LoginPage > div.centered > div.inputArea > div > input {
+  font-size: 12px;
+}
+
+div.LoginPage > div.centered > div.inputArea > div > button {
+  font-size: 13px;
+  background-color: var(--buttonBlue);
 }
