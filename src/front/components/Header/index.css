@@ -33,6 +33,15 @@ div.Header > .viewController > div.backgroundImage {
   height: 100%;
 }
 
+div.Header > .viewController > div.backgroundColor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 50px;
+  background-color: var(--translucentWhite);
+}
+
 div.Header > .viewController > .centerBox {
   display: flex;
   justify-content: space-between;

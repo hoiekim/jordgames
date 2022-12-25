@@ -64,6 +64,7 @@ button:not(.big) {
   height: 24px;
   border-radius: 12px;
   font-size: 13px;
+  padding: 0 12px;
 }
 
 button.big {

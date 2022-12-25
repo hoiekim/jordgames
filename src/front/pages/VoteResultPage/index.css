@@ -1,3 +1,22 @@
+div.VoteResultPage > div.gameComboPlaceholder {
+  padding: 0 var(--edgeSpace);
+}
+
+div.VoteResultPage > div.gameComboPlaceholder > div.help > div.title {
+  font-weight: bold;
+}
+
+div.VoteResultPage > div.gameComboPlaceholder > div.help > div {
+  margin: 10px 0;
+}
+
+div.VoteResultPage > div.gameComboPlaceholder > div.buttonBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+}
+
 div.Report {
   border-bottom: 1px #aaa solid;
   padding: var(--edgeSpace);

@@ -29,7 +29,7 @@ const Report = ({ combo, minPlayersForRoom }: Props) => {
 
       const newValue = combo.map(() => new Map());
 
-      const pushPlayer = () => {
+      const pushPlayer = (fuse?: number) => {
         for (let i = 0; i < combo.length; i++) {
           const game = combo[i];
           const gameDetail = bggGameDetails.get(game.id);
@@ -40,9 +40,7 @@ const Report = ({ combo, minPlayersForRoom }: Props) => {
           if (minPlayers <= players.size) continue;
 
           Array.from(allPlayers.values())
-            .sort((a, b) => {
-              return +a.flexible - +b.flexible;
-            })
+            .sort((a, b) => +a.flexible - +b.flexible)
             .find((player) => {
               return !!player.votedGames.find(({ id }) => {
                 if (id === game.id) {
@@ -62,8 +60,12 @@ const Report = ({ combo, minPlayersForRoom }: Props) => {
           return +gameDetail.minplayers.value > players.size;
         });
 
-        if (gamesWithPlayersLessThanMin.length) pushPlayer();
-        else {
+        const { length } = gamesWithPlayersLessThanMin;
+        const registeredPlayers = newValue.reduce((acc, m) => acc + m.size, 0);
+
+        if (length && (!fuse || fuse !== registeredPlayers)) {
+          pushPlayer(registeredPlayers);
+        } else {
           const iterator = allPlayers.values();
           let e = iterator.next();
           while (!e.done) {

@@ -39,6 +39,7 @@ const Header = () => {
   return (
     <div className="Header" style={{ display: user ? undefined : "none" }}>
       <div className="viewController">
+        <div className="backgroundColor" />
         <div
           className="backgroundImage"
           style={{
