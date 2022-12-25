@@ -216,7 +216,7 @@ div.Router:not(.transitioning.backward) > div.currentPage {
 div.floatingBox {
   position: fixed;
   bottom: 0;
-  height: 90px;
+  height: 60px;
   padding: 0 var(--edgeSpace);
   width: min(100%, var(--maxWidth));
   background-color: var(--translucentWhite);
