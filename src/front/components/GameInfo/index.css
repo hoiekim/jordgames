@@ -105,7 +105,3 @@ div.GameInfo > div.voters > div {
   padding: 0 10px;
   font-size: 12px;
 }
-
-div.GameInfo > div > div.voters > div:not(.flexible) {
-  background-color: #ccc;
-}

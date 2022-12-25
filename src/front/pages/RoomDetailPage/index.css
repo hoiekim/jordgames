@@ -17,20 +17,3 @@ div.GameRow > div.buttonHolder {
 div.GameRow > div.buttonHolder > button.voted {
   background-color: var(--buttonBlueSelected);
 }
-
-div.Report {
-  border-bottom: 1px #aaa solid;
-  padding: var(--edgeSpace);
-}
-
-div.Report:last-child {
-  border-bottom: none;
-}
-
-div.Report > div {
-  display: flex;
-}
-
-div.Report > div > div {
-  flex: 1;
-}

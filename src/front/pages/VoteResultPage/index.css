@@ -1,28 +1,10 @@
-div.GameRow {
-  padding: 0 var(--edgeSpace);
-}
-
-div.GameRow > div:first-child {
-  margin-top: 15px;
-}
-
-div.GameRow > div.buttonHolder {
-  position: relative;
-  top: -20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-div.GameRow > div.buttonHolder > button.voted {
-  background-color: var(--buttonBlueSelected);
-}
-
 div.Report {
   border-bottom: 1px #aaa solid;
   padding: var(--edgeSpace);
   display: flex;
-  margin: -12px;
+  flex-wrap: wrap;
+  margin-left: -12px;
+  margin-bottom: -12px;
 }
 
 div.Report:last-child {
@@ -31,21 +13,43 @@ div.Report:last-child {
 
 div.Report > div {
   flex: 1;
+  margin-left: 12px;
+  margin-bottom: 12px;
+  min-width: 120px;
+  max-width: 200px;
+  padding: 14px;
 }
 
-div.ResultGameCard {
-  box-shadow: var(--cardBlueShadow);
+div.Report > div.resultGameCard {
+  box-shadow: var(--smallCardBlueShadow);
   border-radius: 20px;
-  padding: 18px;
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 12px;
 }
 
-div.ResultGameCard > div.title {
+div.Report > div.resultGameCard > div.title {
   font-weight: bold;
   font-size: 13px;
   margin-bottom: 10px;
+}
+
+div.Report > div.resultGameCard > div.players {
+  margin: 5px -5px;
+}
+
+div.Report > div.resultGameCard > div.players > div {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  height: 23px;
+  border-radius: 10px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+div.Report > div.resultGameCard > div.players > div.flexible {
+  box-shadow: 0 2px 0 0 #0003;
 }

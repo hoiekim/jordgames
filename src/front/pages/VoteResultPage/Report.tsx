@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Game } from "back/lib";
-import { useAppContext, Player } from "front";
-import ResultGameCard from "./ResultGameCard";
+import { useAppContext, Player, getColor, ImageCircle } from "front";
 
 interface Props {
   combo: Game[];
+  minPlayersForRoom: number;
 }
 
-const Report = ({ combo }: Props) => {
+const Report = ({ combo, minPlayersForRoom }: Props) => {
   const { bggGameDetails } = useAppContext();
   const [players, setPlayers] = useState<Map<string, Player>[]>(
     combo.map(() => new Map())
@@ -24,7 +24,6 @@ const Report = ({ combo }: Props) => {
           if (!allPlayers.has(user.id)) allPlayers.set(user.id, player);
           else player.flexible = true;
           player.votedGames.push(game);
-          return [user.id, player];
         });
       });
 
@@ -35,15 +34,50 @@ const Report = ({ combo }: Props) => {
           const game = combo[i];
           const gameDetail = bggGameDetails.get(game.id);
           if (!gameDetail) continue;
+
           const players = newValue[i];
-          if (+gameDetail.minplayers.value <= players.size) continue;
-          const playerToAdd = Array.from(allPlayers.values()).find(({ votedGames }) => {
-            if (votedGames.find(({ id }) => id === game.id)) return true;
-            return false;
-          });
-          if (!playerToAdd) throw new Error("Failed to create report.");
-          players.set(playerToAdd.id, playerToAdd);
-          allPlayers.delete(playerToAdd.id);
+          const minPlayers = Math.max(minPlayersForRoom, +gameDetail.minplayers.value);
+          if (minPlayers <= players.size) continue;
+
+          Array.from(allPlayers.values())
+            .sort((a, b) => {
+              return +a.flexible - +b.flexible;
+            })
+            .find((player) => {
+              return !!player.votedGames.find(({ id }) => {
+                if (id === game.id) {
+                  players.set(player.id, player);
+                  allPlayers.delete(player.id);
+                  return true;
+                }
+                return false;
+              });
+            });
+        }
+
+        const gamesWithPlayersLessThanMin = combo.filter(({ id }, i) => {
+          const gameDetail = bggGameDetails.get(id);
+          if (!gameDetail) return false;
+          const players = newValue[i];
+          return +gameDetail.minplayers.value > players.size;
+        });
+
+        if (gamesWithPlayersLessThanMin.length) pushPlayer();
+        else {
+          const iterator = allPlayers.values();
+          let e = iterator.next();
+          while (!e.done) {
+            const player = e.value;
+            allPlayers.delete(player.id);
+            combo.find((game, i) => {
+              if (game.id === player.votedGames[0].id) {
+                newValue[i].set(player.id, player);
+                return true;
+              }
+              return false;
+            });
+            e = iterator.next();
+          }
         }
       };
 
@@ -51,11 +85,11 @@ const Report = ({ combo }: Props) => {
 
       return newValue;
     });
-  }, [combo, bggGameDetails]);
+  }, [combo, bggGameDetails, minPlayersForRoom]);
 
   const comboId = combo.map(({ id }) => id).join("_");
 
-  const playersTag = players.map((player) =>
+  const playersTag = players.map((player, i) =>
     Array.from(player.values())
       .sort((a, b) => +a.flexible - +b.flexible)
       .map((player) => {
@@ -64,25 +98,57 @@ const Report = ({ combo }: Props) => {
         if (flexible) classes.push("flexible");
         const onClick = () => {
           if (!flexible) return;
-          setPlayers(([playersA, playersB]) => {
-            const newplayersA = new Map(playersA);
-            const newplayersB = new Map(playersB);
-            newplayersB.delete(id);
-            newplayersA.set(id, player);
-            return [newplayersA, newplayersB];
+          setPlayers((oldValue) => {
+            const newValue = [...oldValue];
+            let j = i + 1;
+            if (j === newValue.length) j = 0;
+            while (j !== i) {
+              const game = combo[j];
+              if (game.votes.find((voter) => voter.id === id)) {
+                newValue[i].delete(id);
+                newValue[j].set(id, player);
+                break;
+              }
+              j++;
+              if (j === newValue.length) j = 0;
+            }
+            return newValue;
           });
         };
+        const backgroundColor = `var(--${getColor(parseInt(id, 16) % 5)})`;
         return (
-          <div key={`${comboId}_${id}`} className={classes.join(" ")} onClick={onClick}>
+          <div
+            key={`${comboId}_${id}`}
+            className={classes.join(" ")}
+            onClick={onClick}
+            style={{ backgroundColor }}
+          >
             {username}
           </div>
         );
       })
   );
 
-  const gameInfos = combo.map((game, i) => (
-    <ResultGameCard key={game.id} game={game} players={players[i]} />
-  ));
+  const gameInfos = combo.map((game, i) => {
+    const bggGameDetail = bggGameDetails.get(game.id);
+
+    if (!bggGameDetail) return <></>;
+
+    const { name, thumbnail } = bggGameDetail || {};
+    const safeName = Array.isArray(name) ? name[0].value : name.value;
+
+    return (
+      <div key={game.id} className="resultGameCard">
+        <div className="title">{safeName}</div>
+        <div className="image">
+          <ImageCircle url={thumbnail} radius={69} />
+        </div>
+        <div className="players">{playersTag[i]}</div>
+      </div>
+    );
+  });
+
+  if (gameInfos.length % 2) gameInfos.push(<div key="placeholder" />);
 
   return <div className="Report">{gameInfos}</div>;
 };

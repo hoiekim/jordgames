@@ -102,7 +102,10 @@ const GameInfo = ({ game, vertical, showVoters }: Props) => {
             className="title"
           >
             <span>{safeName}</span>
-            <div className="foldIcon">
+            <div
+              className="foldIcon"
+              style={isDetailOpen ? { transform: "rotate(180deg)" } : undefined}
+            >
               <ChevronDownIcon />
             </div>
           </div>

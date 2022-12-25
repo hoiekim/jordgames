@@ -22,7 +22,8 @@ const RoomDetailPage = () => {
   if (!room) return <div>Not Found</div>;
 
   const gameComboHorses = gameCombos?.map((combo) => {
-    return <Report key={`${combo[0]?.id}_${combo[1]?.id}`} combo={combo} />;
+    const comboId = combo.map(({ id }) => id).join("_");
+    return <Report key={comboId} combo={combo} minPlayersForRoom={room.min_players} />;
   });
 
   const seeResult = () => router.back();

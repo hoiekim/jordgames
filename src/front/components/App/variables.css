@@ -8,6 +8,7 @@
   --buttonBlueSelected: #273dae;
   --buttonBlueShadow: 0 4px 4px 0 #314190;
   --cardBlueShadow: 0 4px 16px 0 #969fcb;
+  --smallCardBlueShadow: 0 2px 8px 0 #969fcb;
   --inputBlueInsetShadow: inset 0 1px 5px -2px var(--buttonBlue);
   --buttonGreen: #84ce57;
   --buttonGreenShadow: 0 4px 4px 0 #4e7b33;
