@@ -4,7 +4,7 @@ import "./index.css";
 
 const { VOTE_RESULT } = PATH;
 
-const RoomDetailPage = () => {
+const VoteResultPage = () => {
   const { rooms, router } = useAppContext();
   const { path, transition, params } = router;
   const { incomingPath, incomingParams } = transition;
@@ -29,7 +29,7 @@ const RoomDetailPage = () => {
   const seeResult = () => router.back();
 
   return (
-    <div className="RoomDetailPage">
+    <div className="VoteResultPage">
       <h2>
         <span>Results for {room.name}</span>
       </h2>
@@ -43,4 +43,4 @@ const RoomDetailPage = () => {
   );
 };
 
-export default RoomDetailPage;
+export default VoteResultPage;

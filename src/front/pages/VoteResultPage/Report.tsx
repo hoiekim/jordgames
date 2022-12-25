@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Report = ({ combo, minPlayersForRoom }: Props) => {
-  const { bggGameDetails } = useAppContext();
+  const { bggGameDetails, viewSize } = useAppContext();
   const [players, setPlayers] = useState<Map<string, Player>[]>(
     combo.map(() => new Map())
   );
@@ -148,7 +148,9 @@ const Report = ({ combo, minPlayersForRoom }: Props) => {
     );
   });
 
-  if (gameInfos.length % 2) gameInfos.push(<div key="placeholder" />);
+  const smallScreen = viewSize.width < 440;
+
+  if (gameInfos.length % 2 && smallScreen) gameInfos.push(<div key="placeholder" />);
 
   return <div className="Report">{gameInfos}</div>;
 };

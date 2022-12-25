@@ -6,13 +6,12 @@ import "./index.css";
 
 interface Props {
   game: Game;
-  vertical?: boolean;
   showVoters?: boolean;
 }
 
 const fetchJobs = new Map<string, true>();
 
-const GameInfo = ({ game, vertical, showVoters }: Props) => {
+const GameInfo = ({ game, showVoters }: Props) => {
   const { id, votes } = game;
   const { bggGameDetails, setBggGameDetails } = useAppContext();
   const bggGameDetail = bggGameDetails.get(game.id);
@@ -48,32 +47,6 @@ const GameInfo = ({ game, vertical, showVoters }: Props) => {
 
   const safeName = Array.isArray(name) ? name[0].value : name.value;
   const complexity = +statistics?.ratings?.averageweight?.value || 0;
-
-  if (vertical)
-    return (
-      <div className="GameInfo vertical">
-        <div className="title">{safeName}</div>
-        <div className="image">
-          <img src={thumbnail} alt={safeName || game.id} />
-        </div>
-        <div>
-          <div className="line">
-            <span>
-              {minplayers.value} - {maxplayers.value} players
-            </span>
-          </div>
-          <div className="line">
-            <span>Complexity:&nbsp;</span>
-            <span>{complexity.toFixed(1)} / 5</span>
-          </div>
-          <div className="line">
-            <span>
-              {minplaytime.value} - {maxplaytime.value} mins
-            </span>
-          </div>
-        </div>
-      </div>
-    );
 
   const { boardgamecategory, boardgamemechanic } = new BggLinkData(link);
 

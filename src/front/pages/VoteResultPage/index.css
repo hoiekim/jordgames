@@ -4,7 +4,6 @@ div.Report {
   display: flex;
   flex-wrap: wrap;
   margin-left: -12px;
-  margin-bottom: -12px;
 }
 
 div.Report:last-child {
@@ -16,7 +15,7 @@ div.Report > div {
   margin-left: 12px;
   margin-bottom: 12px;
   min-width: 120px;
-  max-width: 200px;
+  max-width: 300px;
   padding: 14px;
 }
 
