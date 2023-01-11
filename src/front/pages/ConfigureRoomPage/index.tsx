@@ -86,7 +86,9 @@ const ConfigureRoomPage = () => {
       })
       .catch(console.error)
       .finally(() => {
-        apiCallThrottling = false;
+        setTimeout(() => {
+          apiCallThrottling = false;
+        }, 5000);
       });
   }, [path, collectionUsername, setBggCollections]);
 
@@ -158,7 +160,7 @@ const ConfigureRoomPage = () => {
   const gameOptions =
     !!bggCollection &&
     Array.from(bggCollection.values())
-      .filter(({ objectid }) => !selectedGames.has(objectid))
+      .filter(({ objectid }) => objectid && !selectedGames.has(objectid))
       .map((e, i) => {
         const { name, objectid: id, thumbnail } = e;
         const addGame = () => {
@@ -171,11 +173,13 @@ const ConfigureRoomPage = () => {
         return (
           <div className="gameOption" key={i + "_" + name}>
             <GameInfo game={new Game({ name, id, thumbnail })} />
-            <div className="buttonHolder">
-              <button className="green shadow big" onClick={addGame}>
-                Add
-              </button>
-            </div>
+            {!!bggGameDetails.get(id) && (
+              <div className="buttonHolder">
+                <button className="green shadow big" onClick={addGame}>
+                  Add
+                </button>
+              </div>
+            )}
           </div>
         );
       });
