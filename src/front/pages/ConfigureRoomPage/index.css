@@ -58,6 +58,8 @@ div.ConfigureRoomPage > div.inputArea > div.numberOfStuff > span {
 
 div.ConfigureRoomPage > div.inputArea > div.numberOfStuff > select {
   width: 30px;
+  padding: 0;
+  text-align: center;
 }
 
 div.ConfigureRoomPage > div.inputArea > div.selectedGames {
