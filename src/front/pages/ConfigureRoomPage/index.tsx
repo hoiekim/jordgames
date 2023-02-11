@@ -71,6 +71,7 @@ const ConfigureRoomPage = () => {
     type CollectionResponse = { items?: Items; message?: string };
     const paramString = new URLSearchParams({
       username: collectionUsername,
+      own: "1",
     }).toString();
 
     call.bgg
